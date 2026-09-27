@@ -1,0 +1,5 @@
+{
+  "nav": { "home": "Home", "myListings": "My Listings", "favorites": "Favorites", "login": "Login", "register": "Register" },
+  "auth": { "email": "Email", "password": "Password", "loginButton": "Login" },
+  "listing": { "addItem": "Add Item", "price": "Price", "condition": "Condition" }
+}

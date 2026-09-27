@@ -1,0 +1,5 @@
+{
+  "nav": { "home": "الرئيسية", "myListings": "قوائمي", "favorites": "المفضلة", "login": "دخول", "register": "تسجيل" },
+  "auth": { "email": "البريد الإلكتروني", "password": "كلمة المرور", "loginButton": "تسجيل الدخول" },
+  "listing": { "addItem": "أضف منتج", "price": "السعر", "condition": "الحالة" }
+}
