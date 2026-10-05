@@ -1,0 +1,315 @@
+.details-card {
+    width: min(100%, 864px);
+    margin: 16px auto;
+    padding: 32px;
+    box-sizing: border-box;
+
+    background: #171d2b;
+    border: 1px solid #30384a;
+    border-radius: 26px;
+
+    color: #ffffff;
+}
+
+/* =========================
+   AI Banner
+========================= */
+
+.ai-banner {
+    min-height: 66px;
+    padding: 0 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border: 1px solid #3f4d91;
+    border-radius: 22px;
+
+    background: #1c2338;
+    box-sizing: border-box;
+}
+
+.ai-message {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.check-icon {
+    width: 18px;
+    height: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 2px solid #6f7cff;
+    border-radius: 50%;
+
+    color: #7d8aff;
+    font-size: 11px;
+}
+
+.regenerate-btn {
+    border: none;
+    background: transparent;
+
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    cursor: pointer;
+}
+
+.regenerate-btn:hover {
+    color: #8792ff;
+}
+
+.regenerate-icon {
+    font-size: 20px;
+}
+
+/* =========================
+   Form
+========================= */
+
+.form-group {
+    margin-top: 22px;
+}
+
+.form-group label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    margin-bottom: 8px;
+
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.ai-badge {
+    padding: 3px 8px;
+
+    border-radius: 6px;
+
+    background: rgba(93, 104, 210, 0.18);
+    color: #7d8cff;
+
+    font-size: 10px;
+    font-weight: 500;
+}
+
+/* =========================
+   Inputs
+========================= */
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    box-sizing: border-box;
+
+    border: 1px solid #394253;
+    border-radius: 20px;
+
+    background: #171d2b;
+    color: #ffffff;
+
+    outline: none;
+
+    font-family: inherit;
+    font-size: 15px;
+}
+
+.form-group input,
+.form-group select {
+    height: 37px;
+    padding: 0 12px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: #6875e8;
+}
+
+.form-group textarea {
+    min-height: 118px;
+    padding: 14px 12px;
+
+    resize: vertical;
+    line-height: 1.45;
+}
+
+/* =========================
+   Two columns
+========================= */
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+/* =========================
+   Select
+========================= */
+
+.select-wrapper {
+    position: relative;
+}
+
+.select-wrapper select {
+    appearance: none;
+    cursor: pointer;
+
+    padding-right: 38px;
+}
+
+.select-arrow {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #858d9d;
+    pointer-events: none;
+
+    font-size: 18px;
+}
+
+/* =========================
+   Condition
+========================= */
+
+.condition-group {
+    margin-top: 20px;
+}
+
+.radio-group {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.radio-option {
+    position: relative;
+
+    display: flex !important;
+    align-items: center;
+    gap: 7px;
+
+    margin: 0 !important;
+
+    font-size: 15px !important;
+    font-weight: 400 !important;
+
+    cursor: pointer;
+}
+
+.radio-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.custom-radio {
+    width: 15px;
+    height: 15px;
+
+    border: 1px solid #7180ff;
+    border-radius: 50%;
+
+    box-sizing: border-box;
+}
+
+.radio-option input:checked + .custom-radio {
+    box-shadow: inset 0 0 0 3px #171d2b;
+    background: #7180ff;
+}
+
+/* =========================
+   Footer
+========================= */
+
+.form-footer {
+    margin-top: 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.back-btn,
+.next-btn {
+    border: none;
+    background: transparent;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.back-btn {
+    margin-left: 15px;
+    color: #ffffff;
+}
+
+.back-btn:hover {
+    color: #8b96ff;
+}
+
+.next-btn {
+    min-width: 64px;
+    height: 36px;
+    padding: 0 17px;
+
+    border-radius: 18px;
+
+    background: #737cff;
+    color: #ffffff;
+}
+
+.next-btn:hover {
+    background: #646ef5;
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 700px) {
+    .details-card {
+        padding: 20px;
+        border-radius: 20px;
+    }
+
+    .ai-banner {
+        padding: 14px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .radio-group {
+        flex-wrap: wrap;
+    }
+}
