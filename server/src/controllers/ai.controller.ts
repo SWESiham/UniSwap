@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import fs from 'fs/promises'
 import path from 'path';
+import { randomUUID } from "crypto";
 import { analyzeImages } from '../services/ai.service';
 import Category from '../models/Category';
 
@@ -10,6 +11,7 @@ export const analyze = async (req: Request, res: Response) => {
         if (!files.length)
             return res.status(400).json({ message: "No Images" });
         const lang = req.body.lang === "ar" ? "ar" : "en";
+        console.log("lang received:", req.body.lang, "→", lang);
         const cats = await Category.find({ isActive: true });
         const names = cats.map((c: any) => c.name);
 
@@ -22,11 +24,11 @@ export const analyze = async (req: Request, res: Response) => {
         const imgUrls: string[] = [];
         for (const f of files) {
             const ext = f.mimetype === "image/png" ? 'png' : "jpg";
-            const name = `${crypto.randomUUID()}-${Math.round(Math.random() * 1e6)}.${ext}`;
+            const name = `${crypto.randomUUID()}.${ext}`;
             await fs.writeFile(path.join(uploadDir, name), f.buffer);
             imgUrls.push(`/uploads/${name}`);
         }
-
+        
         res.json({ ...result, categoryId: cat?.id, images: imgUrls });
 
     } catch (err) {

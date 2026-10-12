@@ -2,26 +2,26 @@ import React, { useEffect, useState } from "react";
 import api from "../../services/api";
 import "./ItemDetailsStep.css";
 
-//TODO Generate in arabic and english
-//TODO check the ai analyze; it just read one image -- Be attention of it #
-
 type Props = {
   initData: any;
+  lang: "ar" | "en";
   onNext: (formData: any) => void;
   onBack: () => void;
-  onRegenrateLang: () => void;
+  onRegenrateLang: (lang: "ar" | "en") => void;
 };
 export const ItemDetailsStep = ({
+  lang,
   initData,
   onNext,
   onBack,
   onRegenrateLang,
 }: Props) => {
   const [title, setTitle] = useState(initData?.title || "");
-  const [category, setCategory] = useState(initData?.category || "");
+  const [category, setCategory] = useState(initData?.categoryId || "");
   const [brand, setBrand] = useState(initData?.brand || "");
   const [condition, setCondition] = useState(initData?.condition || "Like New");
   const [description, setDescription] = useState(initData?.description || "");
+  const [price, setPrice] = useState(initData?.price || "");
   const [categories, setCategories] = useState<any[]>([]);
   const [catsLoading, setCatsLoading] = useState(false);
 
@@ -37,21 +37,20 @@ export const ItemDetailsStep = ({
       } finally {
         setCatsLoading(false);
       }
-
-      
     };
     fetchCats();
   }, []);
 
-   const handleNext = () => {
-        onNext({
-            title,
-            category,
-            brand,
-            condition,
-            description,
-        });
-    };
+  const handleNext = () => {
+    onNext({
+      title,
+      category,
+      brand,
+      condition,
+      description,
+      price: Number(price)
+    });
+  };
   return (
     <>
       <div className="details-card">
@@ -63,10 +62,10 @@ export const ItemDetailsStep = ({
           <button
             type="button"
             className="regenrate-btn"
-            onClick={onRegenrateLang}
+            onClick={() => onRegenrateLang(lang === "en" ? "ar" : "en")}
           >
-            <span className="regenerate-icon">⟳</span>
-            Regenerate in Arabic
+            <i className="fa-solid fa-rotate"></i>
+            Regenerate in {lang === "en" ? "Arabic" : "English"}
           </button>
         </div>
         <div className="form-group">
@@ -77,11 +76,12 @@ export const ItemDetailsStep = ({
           <input
             type="text"
             value={title}
+            dir="auto"
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
 
-        <div className="from-row">
+        <div className="form-row">
           <div className="form-group">
             <label>
               Category
@@ -110,9 +110,15 @@ export const ItemDetailsStep = ({
               Brand
               <span className="ai-badge">✨AI-generated</span>
             </label>
-            <input type="text" value={brand} onChange={(e) => e.target.value} />
+            <input
+              type="text"
+              value={brand}
+              onChange={(e) => setBrand(e.target.value)}
+            />
           </div>
+        </div>
 
+        <div className="form-row">
           <div className="form-group condition-group">
             <label>
               Condition
@@ -156,22 +162,39 @@ export const ItemDetailsStep = ({
             </div>
           </div>
 
-          <div className="form-group description-group">
+          <div className="form-group">
             <label>
-              Descrption
+              Price (EGP)
               <span className="ai-badge">✨AI-generated</span>
             </label>
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            ></textarea>
-                  </div>
-                  
-                  <div className="form-footer">
-                      <button type="button" className="back-btn" onClick={onBack}>Back</button>
-                      <button type="button" className="next-btn" onClick={handleNext}>Next</button>
-                    
-                  </div>
+            <input
+              type="number"
+              min={0}
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div className="form-group description-group">
+          <label>
+            Description
+            <span className="ai-badge">✨AI-generated</span>
+          </label>
+          <textarea
+            value={description}
+            dir="auto"
+            onChange={(e) => setDescription(e.target.value)}
+          ></textarea>
+        </div>
+
+        <div className="form-footer">
+          <button type="button" className="back-btn" onClick={onBack}>
+            Back
+          </button>
+          <button type="button" className="next-btn" onClick={handleNext}>
+            Next
+          </button>
         </div>
       </div>
     </>
