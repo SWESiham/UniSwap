@@ -7,7 +7,7 @@ export interface IListing {
     brand?: string;
     category: mongoose.Types.ObjectId;
     price: number;
-    condition: 'new' | 'like_new' | 'very_good' | 'good' | 'acceptable';
+    condition: 'new' | 'like_new' | 'used' | 'very_good' | 'good' | 'acceptable';
     department?: string;
     faculty?: string;
     images: string[];
@@ -24,10 +24,10 @@ const ListingSchema: Schema = new Schema(
         brand: { type: String },
         price: { type: Number, required: true },
         category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
-        condition: { type: String, enum: ['new', 'like_new', 'very_good', 'good', 'acceptable'], required: true },
+        condition: { type: String, enum: ['new', 'like_new','used', 'very_good', 'good', 'acceptable' ], required: true },
         department: { type: String },
         faculty: { type: String },
-        images: [{ type: Array}],
+        images: [{ type: String}],
         isApproved: { type: Boolean, default: true },
         status: { type: String, enum: ['active', 'sold', 'deleted'], default: 'active' },
         type: { type: String, enum: ['sell', 'exchange'], default: 'sell' },
