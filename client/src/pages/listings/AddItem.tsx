@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { analyzeImages } from "../../services/ai.api";
 import "./AddItem.css";
 import { AIAnalysisPanel } from "./AIAnalysisPanel";
@@ -10,6 +10,7 @@ export const AddItem = () => {
   const [error, setError] = useState("");
   const [result, setResult] = useState<any>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [lang, setLang] = useState<"en" | "ar">("en");
   const processFiles = async (list: File[]) => {
     if (list.length > 6) {
       setError("Max 6 photos");
@@ -43,25 +44,44 @@ export const AddItem = () => {
     return setFiles([]);
   };
 
-  const handleScan = async () => {
+  const handleScan = async () => RegenerateAI("en");
+
+  const RegenerateAI = async (lang: "en" | "ar") => {
     setStep(2);
     setError("");
     try {
-      const data = await analyzeImages(files, "en");
+      const data = await analyzeImages(files, lang);
       setResult(data);
+      setLang(lang);
       setStep(3);
-    } catch {
-      setError("Scan failed,try again");
+    } catch (err) {
+      setError("Scan failed, try again");
       setStep(1);
     }
   };
 
+  const previews = useMemo(
+    () => files.map((f) => ({ file: f, url: URL.createObjectURL(f) })),
+    [files],
+  );
+
+  useEffect(() => {
+    return () => previews.forEach((p) => URL.revokeObjectURL(p.url));
+  }, [previews]);
   return (
     <div className="add-item-page">
       <div className="panals">
         <div className="panal-1">
           <div className="card">
-            {error && <p className="error">{error}</p>}
+            {error && (
+              <div className="error-banner" role="alert">
+                <span className="error-icon">!</span>
+                <span className="error-text">{error}</span>
+                <button className="error-close" onClick={() => setError("")}>
+                  ×
+                </button>
+              </div>
+            )}
             <h2 id="add-item">Add a new item</h2>
             <p id="para-add-item">Photos first — our AI writes the rest</p>
             <div className="progress">
@@ -77,7 +97,7 @@ export const AddItem = () => {
                 )}
                 Photos
               </div>
-              <hr className={step >1 ? "done":""}/>
+              <hr className={step > 1 ? "done" : ""} />
               <div
                 className={`steps ${step === 2 ? "active" : step > 2 ? "done" : ""}`}
               >
@@ -90,7 +110,7 @@ export const AddItem = () => {
                 )}
                 AI analysis
               </div>
-              <hr className={step >2 ? "done":""}/>
+              <hr className={step > 2 ? "done" : ""} />
               <div
                 className={`steps ${step === 3 ? "active" : step > 3 ? "done" : ""}`}
               >
@@ -103,7 +123,7 @@ export const AddItem = () => {
                 )}
                 Details
               </div>
-              <hr className={step >3 ? "done":""}/>
+              <hr className={step > 3 ? "done" : ""} />
               <div
                 className={`steps ${step === 4 ? "active" : step > 4 ? "done" : ""}`}
               >
@@ -151,9 +171,12 @@ export const AddItem = () => {
                   <span>Up to 6 photos, JPG or PNG</span>
                 </label>
                 <div className="previews">
-                  {files.map((f, index) => (
-                    <div className="thumb" key={f.name}>
-                      <img src={URL.createObjectURL(f)} alt={f.name} />
+                  {previews.map(({ file: f, url }, index) => (
+                    <div
+                      className="thumb"
+                      key={`${f.name}-${f.lastModified}-${f.size}`}
+                    >
+                      <img src={url} alt={f.name} />
                       {index === 0 && (
                         <span className="badge badge-cover">Cover</span>
                       )}
@@ -197,10 +220,19 @@ export const AddItem = () => {
           )}
         </div>
         <div className="panel-2">
-          {step === 2 && <AIAnalysisPanel files={files}/>}
+          {step === 2 && <AIAnalysisPanel files={files} />}
         </div>
         <div className="panel-3">
-          {step === 3 && <ItemDetailsStep initData={result} onNext={() => setStep(4)} onBack={() => setStep(1)} onRegenrateLang={ (lang)=> 'ar'} />}
+          {step === 3 && (
+            <ItemDetailsStep
+              key={lang}
+              lang={lang}
+              initData={result}
+              onNext={() => setStep(4)}
+              onBack={() => setStep(1)}
+              onRegenrateLang={(lang) => RegenerateAI(lang)}
+            />
+          )}
         </div>
       </div>
     </div>
