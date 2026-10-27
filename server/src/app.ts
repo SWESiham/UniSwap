@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import path from "path";
 import aiRoutes from "./routes/ai.routes";
+import authRoutes from "./routes/auth.routes";
 import categoryRoute from './routes/category.routes'
 import { errorHandler } from "./middlewares/error.middleware.js";
 import { routerMarketplaces } from "./routes/marketplace.routes.js";
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use("/uploads", express.static(path.join(__dirname, "./../uploads/")));
 app.use("/api/ai", aiRoutes);
+app.use("/api/auth", authRoutes);
 app.use('/api/categories', categoryRoute);
 app.get("/health", (_req, res) => res.json({ status: "ok" }));
 app.use("/listings", routerMarketplaces);
