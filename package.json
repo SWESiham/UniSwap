@@ -1,0 +1,14 @@
+{
+  "name": "uniswap-depi-project",
+  "version": "1.0.0",
+  "description": "UniSwap University Marketplace & Exchange Platform - DEPI Graduation Project",
+  "scripts": {
+    "start": "cmd /c start-project.bat",
+    "dev": "cmd /c start-project.bat",
+    "server": "cd server && node dist/server.js",
+    "client": "cd client && npm run dev"
+  },
+  "keywords": ["uniswap", "depi", "admin", "moderation", "react", "express"],
+  "author": "DEPI Team - DEV 5",
+  "license": "ISC"
+}
