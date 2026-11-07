@@ -1,12 +1,8 @@
 import { Router } from "express";
-import { addSeller, login } from "../controllers/user.controller";
+import { addSeller, getMe } from "../controllers/user.controller";
 
 const router = Router();
 
-// مسار التسجيل كبائع
 router.post("/register-seller", addSeller);
-
-// مسار تسجيل الدخول
-router.post("/login", login);
-
+router.get('/me', getMe);
 export default router;

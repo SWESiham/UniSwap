@@ -8,13 +8,14 @@ import { routerMarketplaces } from "./routes/marketplace.routes.js";
 import userRoutes from "./routes/user.routes";
 // import {routerFavorite} from "./routes/favorite.routes.js";
 import listingRoutes from "./routes/listing.routes";
-
+import authRoutes from './routes/auth.routes';
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use("/uploads", express.static(path.join(__dirname, "./../uploads/")));
-app.use('/api',userRoutes)
+app.use('/api/users', userRoutes)
+app.use('/api/auth', authRoutes);
 app.use("/api/ai", aiRoutes);
 app.use('/api/categories', categoryRoute);
 app.get("/health", (_req, res) => res.json({ status: "ok" }));
