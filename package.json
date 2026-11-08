@@ -10,5 +10,12 @@
   },
   "keywords": ["uniswap", "depi", "admin", "moderation", "react", "express"],
   "author": "DEPI Team - DEV 5",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "react-router-dom": "^7.18.5"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0"
+  }
 }

@@ -60,7 +60,7 @@ RULES:
 - If no photo shows a sellable item, set title to an empty string.
 
 REMINDER: Mention ALL ${files.length} photos' items. Write title and description in ${langName}.`;
-    
+
     const response = await generateWithRetry(() => {
         return ai.models.generateContent({
             model: "gemini-3.5-flash-lite",
@@ -85,5 +85,6 @@ REMINDER: Mention ALL ${files.length} photos' items. Write title and description
             },
         })
     });
-    return JSON.parse(response.text as string);
+    if (!response.text) throw new Error("EMPTY_AI_RESPONSE");
+    return JSON.parse(response.text);
 }

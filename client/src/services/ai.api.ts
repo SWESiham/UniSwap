@@ -1,4 +1,4 @@
-import api from "./api";
+import {api} from "./api";
 export async function analyzeImages(files: File[], lang: 'en' | 'ar') {
     const form = new FormData();
     for (const f of files)
