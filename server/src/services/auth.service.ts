@@ -58,3 +58,5 @@ export async function registerUser(data: RegisterInput) {
         createdAt: user.createdAt,
     };
 }
+
+
