@@ -15,8 +15,12 @@ export interface IListing {
     approvalStatus: 'pending' | 'approved' | 'rejected';
     rejectionReason: String;
     status: 'active' | 'sold' | 'deleted';
-    type: 'sell' | 'exchange';
+    type: 'sell' | 'exchange' | 'both';
     isSold: boolean;
+    pSpot?: string;
+    pContact?: "chat" | 'phone' | 'whatsapp';
+    exWith?: string;
+
 }
 
 const ListingSchema: Schema = new Schema(
@@ -35,9 +39,11 @@ const ListingSchema: Schema = new Schema(
         approvalStatus: { type: String, enum: ["pending", "approved", "rejected"], default: "pending" },
         rejectionReason:{type:String},
         status: { type: String, enum: ['active', 'sold', 'deleted'], default: 'active' },
-        type: { type: String, enum: ['sell', 'exchange'], default: 'sell' },
-        isSold: { type: Boolean, default: false }
-
+        type: { type: String, enum: ['sell', 'exchange','both'], default: 'sell' },
+        isSold: { type: Boolean, default: false },
+        pSpot: { type: String },
+        pContact: { type: String, enum: ["chat", 'phone', 'whatsapp'] },
+        exWith:{type:String}
     }, { timestamps: true }
 )
 

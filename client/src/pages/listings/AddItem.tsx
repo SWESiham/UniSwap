@@ -5,7 +5,9 @@ import { AIAnalysisPanel } from "./AIAnalysisPanel";
 import { ItemDetailsStep } from "./ItemDetailsStep";
 import { ReviewPanal } from "./ReviewPanal";
 import { SuccessStep } from "./SuccessStep";
-
+import { cListing } from "../../services/listings.api";
+import { useNavigate } from "react-router-dom";
+// TODO: update dataaa throw adding
 export const AddItem = () => {
   const [step, setStep] = useState(1);
   const [files, setFiles] = useState<File[]>([]);
@@ -13,6 +15,8 @@ export const AddItem = () => {
   const [result, setResult] = useState<any>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [lang, setLang] = useState<"en" | "ar">("en");
+  const [isPublishing, setIsPublishing] = useState(false);
+  const [listing, setListing] = useState<any>(null);
   const processFiles = async (list: File[]) => {
     if (list.length > 6) {
       setError("Max 6 photos");
@@ -27,7 +31,7 @@ export const AddItem = () => {
     setError("");
     setFiles(list);
   };
-
+  const nav = useNavigate();
   const handleFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
     const list = Array.from(e.target.files ?? []);
     processFiles(list);
@@ -46,9 +50,39 @@ export const AddItem = () => {
   const clearAll = async () => {
     return setFiles([]);
   };
+  const typeMap = {
+    for_sale: "sell",
+    exchange: "exchange",
+    both: "both",
+  } as const;
 
   const handleScan = async () => RegenerateAI("en");
-
+  const handlePublish = async (data: any) => {
+    setIsPublishing(true);
+    try {
+      console.log("additem publish",data);
+      
+     const list =  await cListing({
+        ...result,
+        category: result.categoryId,  
+         condition: result.condition?.toLowerCase().replace(/\s+/g, "_"),
+        type: typeMap[data.saleType as keyof typeof typeMap],
+        pSpot: data.meetSpot,
+        pContact: data.pContact,
+        exWith: data.saleType === "for_sale" ? undefined : data.ExWith,
+      });
+      setListing(list);
+      setStep(5);
+    } catch (err: any) {
+      setError(
+        err.response?.data?.message ||
+          err.message ||
+          "Publish failed, try again",
+      );
+    } finally {
+      setIsPublishing(false);
+    }
+  };
   const RegenerateAI = async (lang: "en" | "ar") => {
     setStep(2);
     setError("");
@@ -250,16 +284,29 @@ export const AddItem = () => {
             <ReviewPanal
               data={result}
               onBack={() => setStep(3)}
-              onPublish={() => setStep(5)}
+              onPublish={handlePublish}
+              isPublishing={isPublishing}
             />
           </>
         )}
         {step === 5 && (
           <>
-            <SuccessStep addItem={() => { setStep(1); setFiles([]); setResult(null); setError("")}} viewList={() => ""}  />
+            <SuccessStep
+              addItem={() => {
+                setStep(1);
+                setFiles([]);
+                setResult(null);
+                setListing(null);
+                setError("");
+              } } listingId={listing._id}              
+            />
           </>
+        
+          
         )}
+        
       </div>
+      
     </div>
   );
 };

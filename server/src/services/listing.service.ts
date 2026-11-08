@@ -2,9 +2,10 @@ import Listing from "../models/Listing"
 import { ApiError } from "../utils/ApiError";
 // create -> c
 export const cListingService = async (listing: any, sellerId: string) => {
-    const { title, description, price, category, condition, images } = listing;
+    const { title, description, price, category, condition, images, type, pSpot, pContact, exWith } = listing;
     return Listing.create({
         title, description, price, category, condition, images,
+         type, pSpot, pContact, exWith,
         seller: sellerId,
         approvalStatus: "pending"
     });
@@ -15,10 +16,10 @@ export const rListingService = async (id: string) => {
 }
 // update -> u
 export const uListingService = async (id: string, sellerId: string, data: any) => {
-    const { title, description, price, category, condition, images } = data;
+    const { title, description, price, category, condition, images, type, pSpot, pContact, exWith } = data;
     const listing = await Listing.findOneAndUpdate(
         { _id: id, seller: sellerId, isSold: false },
-        { title, description, price, category, condition, images },
+        { title, description, price, category, condition, images, type, pSpot, pContact, exWith },
         { returnDocument: "after" , runValidators: true })
     if (!listing)
         throw { status: 404, message: "Listing not found, not yours, or already sold" };

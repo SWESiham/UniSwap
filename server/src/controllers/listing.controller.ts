@@ -13,12 +13,13 @@ export const cListing = async (req: Request, res: Response) => {
             message: "Listing created successfully",
             listing: nListing
         })
-
     } catch (err: any) {
-        return res.status(500).json({
+        console.error("cListing error:", err);
+        const bad = err.name === "ValidationError" || err.name === "CastError";
+        return res.status(bad ? 400 : 500).json({
             message: "Error creating listing",
-            error: err.message
-        })
+            error: err.message,
+        });
     }
 }
 
@@ -36,7 +37,7 @@ export const rOneListing = async (req: Request, res: Response) => {
 export const uListing = async (req: Request, res: Response) => {
     try {
 
-        const  seller = (req as any).user;
+        const seller = (req as any).user;
         const uListing = await uListingService(req.params.id as string, seller.id, req.body);
         return res.status(200).json({
             message: "Listing updated successfully",
@@ -61,7 +62,7 @@ export const dListing = async (req: Request, res: Response) => {
 
 export const sListing = async (req: Request, res: Response) => {
     try {
-        const  seller  = (req as any).user;
+        const seller = (req as any).user;
         const listing = await sListingService(req.params.id as string, seller.id);
         return res.status(200).json({
             message: "Listing marked as sold",

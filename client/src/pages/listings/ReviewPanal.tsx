@@ -5,15 +5,20 @@ import "./ReviewPanal.css";
 type props = {
   data: any;
   onBack: () => void;
-  onPublish:()=> void;
+  onPublish: (data: any) => void;
+  isPublishing?: boolean;
 };
 
-export const ReviewPanal = ({ data, onBack,onPublish }: props) => {
-  console.log(data);
+export const ReviewPanal = ({ data, onBack, onPublish,isPublishing }: props) => {
+  // console.log(data);
   const [meetSpot, setMeetSpot] = useState("");
   const [saleType, setSaleType] = useState<"for_sale" | "exchange" | "both">(
     "for_sale",
   );
+  const [pContact, setPContact] = useState<"chat" | "phone" | "whatsapp">(
+    "chat",
+  );
+  const [ExWith, setExWith] = useState("");
   const imgURL = data?.images?.[0]
     ? "http://localhost:5000" + data.images[0]
     : "";
@@ -61,15 +66,33 @@ export const ReviewPanal = ({ data, onBack,onPublish }: props) => {
           <label>Preferred contact</label>
           <div className="radio-group">
             <label className="radio-label">
-              <input type="radio" name="preferredContact" value="chat" />
+              <input
+                type="radio"
+                name="pContact"
+                value="chat"
+                checked={pContact === "chat"}
+                onChange={() => setPContact("chat")}
+              />
               In-app chat
             </label>
             <label className="radio-label">
-              <input type="radio" name="preferredContact" value="phone" />
+              <input
+                type="radio"
+                name="pContact"
+                value="phone"
+                checked={pContact === "phone"}
+                onChange={() => setPContact("phone")}
+              />
               Phone
             </label>
             <label className="radio-label">
-              <input type="radio" name="preferredContact" value="whatsapp" />
+              <input
+                type="radio"
+                name="pContact"
+                value="whatsapp"
+                checked={pContact === "whatsapp"}
+                onChange={() => setPContact("whatsapp")}
+              />
               WhatsApp
             </label>
           </div>
@@ -81,6 +104,8 @@ export const ReviewPanal = ({ data, onBack,onPublish }: props) => {
             <input
               type="text"
               className="form-input"
+              value={ExWith}
+              onChange={(e) => setExWith(e.target.value)}
               placeholder="e.g. a Calculus textbook or a lab coat"
             />
           </div>
@@ -112,7 +137,9 @@ export const ReviewPanal = ({ data, onBack,onPublish }: props) => {
             )}
             <span className="condition-badge">{data.condition}</span>
 
-            {saleType === "exchange" && <span className="tag-badge">Exchange</span>}
+            {saleType === "exchange" && (
+              <span className="tag-badge">Exchange</span>
+            )}
             {saleType === "both" && (
               <span className="tag-badge">Sale or exchange</span>
             )}
@@ -140,8 +167,14 @@ export const ReviewPanal = ({ data, onBack,onPublish }: props) => {
         <button type="button" className="back-btn" onClick={onBack}>
           Back
         </button>
-        <button type="submit" className="publish-btn" onClick={onPublish}>
-          Publish listing
+        <button
+          type="button"
+          className="publish-btn"
+          disabled={isPublishing}
+          onClick={() => { onPublish({ saleType, meetSpot, pContact, ExWith }); console.log("clicked")}
+          }
+        >
+          {isPublishing ? "Publishing..." : "Publish listing"}
         </button>
       </div>
     </div>
