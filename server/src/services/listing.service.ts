@@ -2,9 +2,9 @@ import Listing from "../models/Listing"
 import { ApiError } from "../utils/ApiError";
 // create -> c
 export const cListingService = async (listing: any, sellerId: string) => {
-    const { title, description, price, category, condition, images, type, pSpot, pContact, exWith } = listing;
+    const { title, description, price, category,brand, condition, images, type, pSpot, pContact, exWith } = listing;
     return Listing.create({
-        title, description, price, category, condition, images,
+        title, description, price, category, condition, images,brand,
          type, pSpot, pContact, exWith,
         seller: sellerId,
         approvalStatus: "pending"
@@ -12,14 +12,14 @@ export const cListingService = async (listing: any, sellerId: string) => {
 };
 // retrieve -> r
 export const rListingService = async (id: string) => {
-    return Listing.findById(id).populate('seller', "name university faculty")
+    return Listing.findById(id).populate('seller', "name university faculty").populate("category","name")
 }
 // update -> u
 export const uListingService = async (id: string, sellerId: string, data: any) => {
-    const { title, description, price, category, condition, images, type, pSpot, pContact, exWith } = data;
+    const { title, description, price,brand, category, condition, images, type, pSpot, pContact, exWith } = data;
     const listing = await Listing.findOneAndUpdate(
         { _id: id, seller: sellerId, isSold: false },
-        { title, description, price, category, condition, images, type, pSpot, pContact, exWith },
+        { title, description, price, category,brand, condition, images, type, pSpot, pContact, exWith },
         { returnDocument: "after" , runValidators: true })
     if (!listing)
         throw { status: 404, message: "Listing not found, not yours, or already sold" };
@@ -46,4 +46,9 @@ export const sListingService = async (_id: string, seller: string) => {
     if (!listing)
         throw { status: 404, message: "Listing not found or not yours" };
     return listing;
+}
+
+export const rUserListingSer = async (seller:string) => {
+    return Listing.find({seller}).populate("category", "name")
+        .sort({ createdAt: -1 });
 }

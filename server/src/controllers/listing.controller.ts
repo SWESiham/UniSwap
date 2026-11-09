@@ -1,5 +1,5 @@
 import Listing from "../models/Listing";
-import { cListingService, dListingService, rListingService, sListingService, uListingService } from "../services/listing.service";
+import { cListingService, dListingService, rListingService, rUserListingSer, sListingService, uListingService } from "../services/listing.service";
 import { Request, Response } from 'express';
 import { ApiError } from "../utils/ApiError";
 export const cListing = async (req: Request, res: Response) => {
@@ -70,5 +70,15 @@ export const sListing = async (req: Request, res: Response) => {
         });
     } catch (err) {
         return ApiError(res, err, "Error marking listing as sold");
+    }
+};
+
+export const rUserListing = async (req: Request, res: Response) => {
+    try {
+        const sellerId = req.params.id as string;
+        const listings = await rUserListingSer(sellerId);
+        res.status(200).json({ success: true, listings });
+    } catch (err) {
+        res.status(500).json({ message: "Failed to get user listings" });
     }
 };

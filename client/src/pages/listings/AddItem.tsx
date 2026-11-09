@@ -55,22 +55,27 @@ export const AddItem = () => {
     exchange: "exchange",
     both: "both",
   } as const;
-
+  
+  // const HandleCat = async (id:string) => {
+  //   const catName = 
+  // }
   const handleScan = async () => RegenerateAI("en");
   const handlePublish = async (data: any) => {
     setIsPublishing(true);
     try {
-      console.log("additem publish",data);
-      
-     const list =  await cListing({
+      console.log("additem publish", data);
+
+      const list = await cListing({
         ...result,
-        category: result.categoryId,  
-         condition: result.condition?.toLowerCase().replace(/\s+/g, "_"),
+        brand: result.brand,
+        category: result.category.name,
+        condition: result.condition?.toLowerCase().replace(/\s+/g, "_"),
         type: typeMap[data.saleType as keyof typeof typeMap],
         pSpot: data.meetSpot,
         pContact: data.pContact,
         exWith: data.saleType === "for_sale" ? undefined : data.ExWith,
       });
+      
       setListing(list);
       setStep(5);
     } catch (err: any) {
@@ -101,7 +106,14 @@ export const AddItem = () => {
     () => files.map((f) => ({ file: f, url: URL.createObjectURL(f) })),
     [files],
   );
+  const handleDetailsNext = (data: any) => {
+    setResult((prev: any) => ({
+      ...prev,
+      ...data,
+    }));
 
+    setStep(4);
+  };
   useEffect(() => {
     return () => previews.forEach((p) => URL.revokeObjectURL(p.url));
   }, [previews]);
@@ -273,7 +285,7 @@ export const AddItem = () => {
               key={lang}
               lang={lang}
               initData={result}
-              onNext={() => setStep(4)}
+              onNext={handleDetailsNext}
               onBack={() => setStep(1)}
               onRegenrateLang={(lang) => RegenerateAI(lang)}
             />
@@ -298,15 +310,13 @@ export const AddItem = () => {
                 setResult(null);
                 setListing(null);
                 setError("");
-              } } listingId={listing._id}              
+              }}
+              listingId={listing._id}
+              listing={listing}
             />
           </>
-        
-          
         )}
-        
       </div>
-      
     </div>
   );
 };

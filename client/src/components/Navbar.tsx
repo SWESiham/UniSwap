@@ -83,11 +83,11 @@ export const Navbar = () => {
         </div>
 
         <div className="navbar-actions">
-          <div className="lang-switcher hide-on-tablet">
+          {/* <div className="lang-switcher hide-on-tablet">
             <Languages size={16} className="lang-icon" />
             <button className="lang-btn active">EN</button>
             <button className="lang-btn">ع</button>
-          </div>
+          </div> */}
 
           <button className="action-btn hide-on-mobile" aria-label="Toggle Theme">
             <Moon size={18} />
@@ -182,11 +182,11 @@ export const Navbar = () => {
             <input type="text" placeholder="Search..." className="search-input" />
           </div>
 
-          <div className="sidebar-lang">
+          {/* <div className="sidebar-lang">
             <Languages size={16} className="lang-icon" />
             <button className="lang-btn active">EN</button>
             <button className="lang-btn">ع</button>
-          </div>
+          </div> */}
         </div>
       </aside>
     </>
