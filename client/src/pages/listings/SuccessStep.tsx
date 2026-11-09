@@ -1,11 +1,13 @@
 import React from 'react'
 import "./SuccessStep.css";
 import { useNavigate } from 'react-router-dom';
+import ProductDetails from './ProductDetails';
 type props = {
     addItem:()=>void,
-    listingId:string,
+  listingId: string,
+    listing:any
 }
-export const SuccessStep = ({ addItem,listingId }: props) => {
+export const SuccessStep = ({ addItem,listingId ,listing}: props) => {
   const nav = useNavigate();
   return (
     <>
@@ -42,7 +44,7 @@ export const SuccessStep = ({ addItem,listingId }: props) => {
               <p>It's pending admin approval and will go live shortly.</p>
 
               <div className="success-actions">
-                <button className="btn-view"  disabled={!listingId} onClick={() => nav(`/product/${listingId}`)}>
+          <button className="btn-view" disabled={!listingId} onClick={() =>  nav(`/product/${listingId}`, {state:{listing}})}>
                   View listing
                 </button>
                 <button 

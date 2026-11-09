@@ -2,6 +2,7 @@ import User from "../models/User";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import type { RegisterInput } from "../validators/auth.validator";
+
 export const loginService = async (email: string, password: string) => {
     // 1. بندور على المستخدم بالإيميل (واستخدمنا select('+password') لأنك عاملة select: false في الـ Schema)
     const user = await User.findOne({ email }).select("+password");
@@ -57,3 +58,5 @@ export async function registerUser(data: RegisterInput) {
         createdAt: user.createdAt,
     };
 }
+
+

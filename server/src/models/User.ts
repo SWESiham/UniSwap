@@ -49,3 +49,4 @@ const userSchema = new Schema<IUser>(
 
 // الاسم User هو نفس الاسم المستخدم في علاقات الإعلانات والمفضلة.
 export default mongoose.model<IUser>("User", userSchema);
+
