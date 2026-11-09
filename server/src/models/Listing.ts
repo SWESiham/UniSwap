@@ -47,4 +47,5 @@ const ListingSchema: Schema = new Schema(
     }, { timestamps: true }
 )
 
+
 export default mongoose.model<IListing>('Listing', ListingSchema)
