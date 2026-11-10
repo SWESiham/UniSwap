@@ -1,0 +1,19 @@
+{
+  "addItem": {
+    "title": "Add a new item",
+    "subtitle": "Photos first — our AI writes the rest",
+    "stepper": {
+      "photos": "Photos",
+      "aiAnalysis": "AI analysis",
+      "details": "Details",
+      "review": "Review"
+    },
+    "upload": {
+      "dragText": "Drag photos here or click to browse",
+      "hintText": "Up to 6 photos, JPG or PNG"
+    },
+    "buttons": {
+      "analyzeAI": "Analyze with AI"
+    }
+  }
+}

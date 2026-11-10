@@ -1,4 +1,5 @@
 
+
 import { Link } from "react-router-dom";
 import {
   BookOpen,
@@ -235,10 +236,9 @@ const Home = () => {
 
   return (
     <main className="home-page">
-      {/* Hero */}
+     
       <Hero />
 
-      {/* Featured Categories */}
       <section className="home-section home-categories-section">
         <div className="home-section-heading">
           <div>
@@ -258,7 +258,7 @@ const Home = () => {
               to={`/browse?category=${encodeURIComponent(category.name)}`}
               className="home-category-card"
               key={category.name}
-            >
+            
               <div className="home-category-icon">{category.icon}</div>
               <h3>{category.name}</h3>
               <span>
@@ -270,7 +270,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Latest Items */}
       <section className="home-section">
         <div className="home-section-heading">
           <div>
@@ -300,7 +299,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* In Your Faculty */}
+
       <section className="home-section home-soft-section">
         <div className="home-section-heading">
           <div>
@@ -335,7 +334,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Trending */}
+    
       <section className="home-section">
         <div className="home-section-heading">
           <div>
@@ -355,7 +354,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Student Requests */}
       <section className="home-section home-requests-section">
         <div className="home-section-heading">
           <div>
@@ -395,7 +393,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Why UniSwap */}
+   
       <section className="home-section home-why-section">
         <div className="home-section-heading home-center-heading">
           <div>
@@ -416,7 +414,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Testimonials */}
+    
       <section className="home-section">
         <div className="home-section-heading home-center-heading">
           <div>
@@ -449,7 +447,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* FAQ */}
+      
       <section className="home-section home-faq-section">
         <div className="home-section-heading home-center-heading">
           <div>
@@ -472,7 +470,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Final CTA */}
+      
       <section className="home-final-cta">
         <div className="home-cta-decoration home-cta-decoration-one" />
         <div className="home-cta-decoration home-cta-decoration-two" />
@@ -501,3 +499,12 @@ const Home = () => {
 };
 
 export default Home;
+
+import React from 'react'
+
+export const Home = () => {
+  return (
+    <div>Home</div>
+  )
+}
+

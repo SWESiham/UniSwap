@@ -1,0 +1,44 @@
+.analyzing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 56px 24px;
+  text-align: center;
+  background: #161d2b;
+  border: 1px solid #2a3447;
+  border-radius: 24px;
+}
+
+.analyzing img {
+  width: 256px;
+  height: 256px;
+  object-fit: cover;
+  border-radius: 24px;
+  border: 1px solid #2a3447;
+  margin-bottom: 20px;
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+.analyzing strong {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.analyzing strong i {
+  color: #7c7cff;
+}
+
+.analyzing span {
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(0.98); }
+}

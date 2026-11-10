@@ -1,26 +1,13 @@
-import {env} from  "./config/env.config.js";
-import { connectDB } from "./config/db.js";
-import app from "./app.js";
+import "dotenv/config";
+import app  from "./app";
+import { connectDB } from './config/db';
 
-const port = env.PORT;
-
-const start = async () => {
-  try {
-         await connectDB();
- 
-         app.listen(port, () => {
-             console.log(
-                 
-  `UniSwap server running on http://localhost:${port}`
-             );
-         });
- 
-     } catch (error) {
-         console.error(
-             "Failed to start server:",
-             error
-         );
-     }
-};
-
-start();
+const PORT = process.env.PORT || 5000;
+connectDB()
+    .then(() =>
+        app.listen(PORT, () =>
+            console.log(`Server on ${PORT}`)))
+    .catch((err) => {
+        console.error(err);
+        process.exit(1);
+})

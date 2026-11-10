@@ -1,4 +1,3 @@
-
 import mongoose, { Schema } from "mongoose";
 
 export interface IListing {
@@ -8,13 +7,20 @@ export interface IListing {
     brand?: string;
     category: mongoose.Types.ObjectId;
     price: number;
-    condition: 'new' | 'like_new' | 'very_good' | 'good' | 'acceptable';
+    condition: 'new' | 'like_new' | 'used' | 'very_good' | 'good' | 'acceptable';
     department?: string;
     faculty?: string;
     images: string[];
     isApproved: boolean;
+    approvalStatus: 'pending' | 'approved' | 'rejected';
+    rejectionReason: String;
     status: 'active' | 'sold' | 'deleted';
-    type: 'sell' | 'exchange';
+    type: 'sell' | 'exchange' | 'both';
+    isSold: boolean;
+    pSpot?: string;
+    pContact?: "chat" | 'phone' | 'whatsapp';
+    exWith?: string;
+
 }
 
 const ListingSchema: Schema = new Schema(
@@ -25,16 +31,21 @@ const ListingSchema: Schema = new Schema(
         brand: { type: String },
         price: { type: Number, required: true },
         category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
-        condition: { type: String, enum: ['new', 'like_new', 'very_good', 'good', 'acceptable'], required: true },
+        condition: { type: String, enum: ['new', 'like_new', 'used', 'very_good', 'good', 'acceptable'], required: true },
         department: { type: String },
         faculty: { type: String },
-        images: [{ type: Array}],
-        isApproved: { type: Boolean, default: true },
+        images: [{ type: String }],
+        isApproved: { type: Boolean, default: false },
+        approvalStatus: { type: String, enum: ["pending", "approved", "rejected"], default: "pending" },
+        rejectionReason:{type:String},
         status: { type: String, enum: ['active', 'sold', 'deleted'], default: 'active' },
-        type: { type: String, enum: ['sell', 'exchange'], default: 'sell' },
-
-
+        type: { type: String, enum: ['sell', 'exchange','both'], default: 'sell' },
+        isSold: { type: Boolean, default: false },
+        pSpot: { type: String },
+        pContact: { type: String, enum: ["chat", 'phone', 'whatsapp'] },
+        exWith:{type:String}
     }, { timestamps: true }
 )
 
-export default mongoose.model<IListing>('Listing',ListingSchema)
+
+export default mongoose.model<IListing>('Listing', ListingSchema)
