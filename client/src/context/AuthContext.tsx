@@ -1,5 +1,5 @@
-import axios from "axios";
-import React, { createContext, useEffect, useState } from "react";
+import { api } from "../services/api";
+import { createContext, useEffect, useState } from "react";
 
 export const AuthContext = createContext<any>(null);
 
@@ -9,17 +9,17 @@ export const AuthProvider = ({ children }: { children: any }) => {  const [user,
     const getMe = async () => {
       try {
         const token = localStorage.getItem("token");
-        console.log(token);
+
         if (!token) {
           setLoading(false);
           return;
         }
-        const me = await axios.get("http://localhost:5000/api/users/me", {
+        const me = await api.get("/users/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        console.log(me);
-        setUser(me.data);
+
+        setUser(me.data.user);
       } catch (error) {
         console.error("Error:", error);
         setUser(null);

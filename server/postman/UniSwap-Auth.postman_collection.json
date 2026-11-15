@@ -1,0 +1,476 @@
+{
+  "info": {
+    "name": "UniSwap Auth",
+    "description": "Validation runs without a database. Live database requests require a working Atlas connection and create a test account.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:5051"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "item": [
+        {
+          "name": "Register - missing fields",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/auth/register",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Expected HTTP 400', function () { pm.response.to.have.status(400); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Register - invalid email",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/auth/register",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\"name\":\"Test Student\",\"password\":\"temporary-test-123\",\"email\":\"wrong\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Expected HTTP 400', function () { pm.response.to.have.status(400); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Register - reject admin role",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/auth/register",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\"name\":\"Test Student\",\"password\":\"temporary-test-123\",\"email\":\"student@example.com\",\"role\":\"admin\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Expected HTTP 400', function () { pm.response.to.have.status(400); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login - missing fields",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/auth/login",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Expected HTTP 400', function () { pm.response.to.have.status(400); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login - invalid email",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/auth/login",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\"password\":\"temporary-test-123\",\"email\":\"wrong\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Expected HTTP 400', function () { pm.response.to.have.status(400); });"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "name": "Validation"
+    },
+    {
+      "item": [
+        {
+          "name": "Register test account",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/auth/register",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\"name\":\"Test Student\",\"password\":\"temporary-test-123\",\"email\":\"student-{{$timestamp}}@example.com\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Expected HTTP 201', function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login - set registered email in body first",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/auth/login",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              },
+              "raw": "{\"password\":\"temporary-test-123\",\"email\":\"replace-with-registered-email@example.com\"}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Expected HTTP 200', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "name": "Live database - run after Atlas is fixed"
+    },
+    {
+      "item": [
+        {
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/users/me",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          },
+          "name": "GET /api/users/me"
+        },
+        {
+          "request": {
+            "method": "PATCH",
+            "body": {
+              "raw": "{\"name\":\"Student\"}",
+              "mode": "raw"
+            },
+            "url": "{{baseUrl}}/api/users/me",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          },
+          "name": "PATCH /api/users/me"
+        },
+        {
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/users/me/dashboard",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          },
+          "name": "GET /api/users/me/dashboard"
+        },
+        {
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/users/me/listings",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          },
+          "name": "GET /api/users/me/listings"
+        },
+        {
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/users/me/sold",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          },
+          "name": "GET /api/users/me/sold"
+        },
+        {
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/users/me/favorites",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          },
+          "name": "GET /api/users/me/favorites"
+        },
+        {
+          "request": {
+            "method": "PATCH",
+            "body": {
+              "raw": "{\"currentPassword\":\"CURRENT\",\"newPassword\":\"NEW_PASSWORD\"}",
+              "mode": "raw"
+            },
+            "url": "{{baseUrl}}/api/auth/change-password",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          },
+          "name": "PATCH /api/auth/change-password"
+        },
+        {
+          "request": {
+            "method": "POST",
+            "body": {
+              "raw": "{\"email\":\"YOUR_EMAIL\"}",
+              "mode": "raw"
+            },
+            "url": "{{baseUrl}}/api/auth/forgot-password",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          },
+          "name": "POST /api/auth/forgot-password"
+        },
+        {
+          "request": {
+            "method": "POST",
+            "body": {
+              "raw": "{\"token\":\"TOKEN_FROM_EMAIL\",\"password\":\"NEW_PASSWORD\"}",
+              "mode": "raw"
+            },
+            "url": "{{baseUrl}}/api/auth/reset-password",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          },
+          "name": "POST /api/auth/reset-password"
+        },
+        {
+          "request": {
+            "method": "POST",
+            "body": {
+              "raw": "{}",
+              "mode": "raw"
+            },
+            "url": "{{baseUrl}}/api/auth/logout",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          },
+          "name": "POST /api/auth/logout"
+        },
+        {
+          "request": {
+            "method": "POST",
+            "body": {
+              "raw": "{\"email\":\"ADMIN_EMAIL\",\"password\":\"ADMIN_PASSWORD\"}",
+              "mode": "raw"
+            },
+            "url": "{{baseUrl}}/api/auth/admin/login",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ]
+          },
+          "name": "POST /api/auth/admin/login"
+        }
+      ],
+      "name": "DEV1 account and dashboard - live server"
+    }
+  ]
+}

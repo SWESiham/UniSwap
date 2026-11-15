@@ -1,23 +1,27 @@
-//create seller
-//login as seller
-// add item 
-import { Request, Response } from "express";
-import { addSellerService } from "../services/user.service";
+import type { Response } from "express";
+import type { AuthRequest } from "../middlewares/auth.middleware";
+import { getUserProfile } from "../services/user.service";
+import { updateUserProfile } from "../services/user.service";
+import { z } from "zod";
+const profileSchema = z.object({
+    name: z.string().trim().min(1).max(100).optional(),
+    faculty: z.string().trim().max(100).optional(),
+    department: z.string().trim().max(100).optional(),
+}).strict().refine(data => Object.keys(data).length > 0, "Send at least one field");
 
-export const addSeller = async (req: Request, res: Response) => {
+export async function updateMe(req: AuthRequest, res: Response) {
+    const result = profileSchema.safeParse(req.body);
+    if (!result.success) { res.status(400).json({ error: "Invalid profile fields" }); return; }
     try {
-        const newSeller = await addSellerService(req.body);
-        return res.status(201).json({ message: "Seller added successfully", user: newSeller });
-    } catch (err: any) {
-        return res.status(400).json({ message: err.message });
-    }
-};
-
-export const getMe = async (req: Request, res: Response) => {
+        const user = await updateUserProfile(req.user!.id, result.data);
+        if (!user) { res.status(404).json({ error: "User not found" }); return; }
+        res.json({ user });
+    } catch { res.status(500).json({ error: "Could not update profile" }); }
+}
+export async function getMe(req: AuthRequest, res: Response) {
     try {
-        const currentUser = (req as any).user;
-        return res.status(200).json({user:currentUser});
-    } catch (err:any) {
-        return res.status(500).json({ message: err.message });
-    }
+        const user = await getUserProfile(req.user!.id);
+        if (!user) { res.status(404).json({ error: "User not found" }); return; }
+        res.json({ user });
+    } catch { res.status(500).json({ error: "Could not load profile" }); }
 }
