@@ -58,3 +58,13 @@ export const dListing = async (id: string) => {
         throw err;
     }
 }
+
+export const rCategoryListings = async (categoryId: string) => {
+  try {
+    const res = await api.get(`/listings?category=${categoryId}`);
+    return res.data.listings || res.data;
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+};

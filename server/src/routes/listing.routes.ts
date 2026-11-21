@@ -1,10 +1,11 @@
 import { Router } from "express";
 import { authenticate } from "../middlewares/auth.middleware";
 import { authorizeRole } from "../middlewares/role.middleware";
-import { cListing,rOneListing ,sListing,uListing,dListing, rUserListing} from "../controllers/listing.controller";
+import { cListing,rOneListing ,sListing,uListing,dListing, rUserListing, rListByCategory} from "../controllers/listing.controller";
 
 
 const route = Router();
+route.get("/", rListByCategory);
 route.get("/user/:id", authenticate, authorizeRole('seller'), rUserListing);
 route.get('/:id', authenticate, authorizeRole('seller'), rOneListing);
 route.post('/', authenticate, authorizeRole('seller'), cListing);

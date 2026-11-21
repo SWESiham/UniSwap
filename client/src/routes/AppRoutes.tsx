@@ -4,7 +4,7 @@ import { AddItem } from "../pages/listings/AddItem";
 import { Login } from "../pages/auth/Login";
 import { Register } from "../pages/auth/Register";
 import { MainLayout } from "../layouts/MainLayout";
-import  Home  from "../pages/marketplace/Home";
+import  {Home}  from "../pages/marketplace/Home";
 import ProductDetails from "../pages/listings/ProductDetails";
 
 export const AppRoutes = () => {

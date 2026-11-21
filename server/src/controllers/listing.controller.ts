@@ -1,5 +1,5 @@
 import Listing from "../models/Listing";
-import { cListingService, dListingService, rListingService, rUserListingSer, sListingService, uListingService } from "../services/listing.service";
+import { cListingService, dListingService, rListbyCategory, rListingService, rUserListingSer, sListingService, uListingService } from "../services/listing.service";
 import { Request, Response } from 'express';
 import { ApiError } from "../utils/ApiError";
 export const cListing = async (req: Request, res: Response) => {
@@ -83,3 +83,13 @@ export const rUserListing = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Failed to get user listings" });
     }
 };
+
+export const rListByCategory = async (req: Request, res: Response) => {
+    try {
+    const { category } = req.query;
+    const listings = await rListbyCategory({ category });
+    return res.status(200).json({ success: true, listings });
+  } catch (err) {
+    return ApiError(res, err, "Error fetching listings");
+  }
+}

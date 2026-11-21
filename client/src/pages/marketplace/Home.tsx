@@ -222,7 +222,7 @@ const faqs = [
   },
 ];
 
-const Home = () => {
+export const Home = () => {
   const facultyProducts = [products[1], products[4]];
 
   const trendingProducts = [
