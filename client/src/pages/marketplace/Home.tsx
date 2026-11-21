@@ -257,7 +257,7 @@ const Home = () => {
             <Link
               to={`/browse?category=${encodeURIComponent(category.name)}`}
               className="home-category-card"
-              key={category.name}
+              key={category.name}>
             
               <div className="home-category-icon">{category.icon}</div>
               <h3>{category.name}</h3>
@@ -498,13 +498,4 @@ const Home = () => {
   );
 };
 
-export default Home;
-
-import React from 'react'
-
-export const Home = () => {
-  return (
-    <div>Home</div>
-  )
-}
 
