@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./ProductDetails.css";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { rListing, rUserListing } from "../../services/listings.api";
+import {
+  dListing,
+  rListing,
+  rUserListing,
+  sListing,
+} from "../../services/listings.api";
 
 const ProductDetails = () => {
   //   const loc = useLocation();
@@ -11,8 +16,33 @@ const ProductDetails = () => {
   const imgURL = "http://localhost:5000";
   const [list, setList] = useState<any>(null);
   const [lists, setLists] = useState<any[]>([]);
-    const { id } = useParams<{ id: string }>();
-    const nav = useNavigate();
+  const { id } = useParams<{ id: string }>();
+  const nav = useNavigate();
+  const [isMarkingSold, setIsMarkingSold] = useState(false);
+  const handleDelete = async () => {
+    if (!id || !window.confirm("Are you sure you want to delete this listing?"))
+      return;
+    try {
+      await dListing(id);
+      nav("/");
+    } catch (error) {
+      console.error("Failed to delete listing:", error);
+    }
+  };
+  const markSold = async () => {
+    if (!id || isMarkingSold) return;
+    try {
+      setIsMarkingSold(true);
+      const updatedListing = await sListing(id);
+      if (updatedListing) {
+        setList(updatedListing);
+      }
+    } catch (error) {
+      console.error("Failed to mark as sold:", error);
+    } finally {
+      setIsMarkingSold(false);
+    }
+  };
   useEffect(() => {
     const rOneListing = async () => {
       if (!id) return;
@@ -77,8 +107,10 @@ const ProductDetails = () => {
       </div>
       <div className="product-right">
         <div className="tags-wrapper">
+          {/* <span className="tag tag-new">{list.type}</span> */}
           <span className="tag tag-new">{list.condition}</span>
           <span className="tag tag-pending">{list.approvalStatus}</span>
+          
         </div>
         <h1 className="product-title">{list.title}</h1>
         <h2 className="product-price">{list.price} EGP</h2>
@@ -99,31 +131,57 @@ const ProductDetails = () => {
             <span className="detail-label">Preferred Spot</span>
             <span className="detail-value">{list.pSpot}</span>
           </div>
-          <div className="detail-card glass-card full-width">
+
+          <div
+            className={`detail-card glass-card ${
+              list.type === "both" || list.type === "exchange"
+                ? ""
+                : "full-width"
+            }`}
+          >
             <span className="detail-label">Posted</span>
             <span className="detail-value">
-              <span className="detail-value">
-                {new Date(list.createdAt)
-                  .toLocaleString("en-GB", {
-                    day: "numeric",
-                    month: "numeric",
-                    year: "numeric",
-                    hour: "numeric",
-                    minute: "2-digit",
-                    hour12: true,
-                  })
-                  .replace(/\//g, "-")
-                  .replace(",", "")}
-              </span>
+              {new Date(list.createdAt)
+                .toLocaleString("en-GB", {
+                  day: "numeric",
+                  month: "numeric",
+                  year: "numeric",
+                  hour: "numeric",
+                  minute: "2-digit",
+                  hour12: true,
+                })
+                .replace(/\//g, "-")
+                .replace(",", "")}
             </span>
           </div>
+
+          {(list.type === "both" || list.type === "exchange") && (
+            <div className="detail-card glass-card">
+              <span className="detail-label">Exchange With</span>
+              <span className="detail-value">{list.exWith || "—"}</span>
+            </div>
+          )}
         </div>
         <div className="action-buttons">
-          <button className="btn btn-outline">Edit</button>
-          <button className="btn btn-outline">
-            <span>♡</span> Mark as sold
+          <button
+            className="btn btn-outline"
+            onClick={() => nav(`/edit-item/${list._id}`)}
+          >
+            Edit
           </button>
-          <button className="btn btn-danger">
+          <button
+            className="btn btn-outline"
+            onClick={markSold}
+            disabled={isMarkingSold || list.status === "sold" || list.isSold}
+          >
+            <span>♡</span>{" "}
+            {list.status === "sold" || list.isSold
+              ? "Sold"
+              : isMarkingSold
+                ? "Updating..."
+                : "Mark as sold"}
+          </button>
+          <button className="btn btn-danger" onClick={handleDelete}>
             <span>🗑</span> Delete listing
           </button>
         </div>
@@ -145,18 +203,25 @@ const ProductDetails = () => {
           </div>
           <hr className="divider" />
           <h3 className="section-title">Other items from this seller</h3>
-                  {lists && lists.length > 0 ? (
-                lists.filter((l: any) => l._id !== list?._id).slice(0,3).map((l: any) => (
-                    // onClick={nav(`/product/${l._id}`)}
-              <div className="other-item" key={l._id} onClick={() => nav(`/product/${l._id}`)}
-      style={{ cursor: "pointer" }}>
-                <img src={`${imgURL}${l.images[0]}`} alt={l.title} />
-                <div className="other-item-details">
-                  <p className="item-name">{l.title}</p>
-                  <p className="item-price">{l.price} EGP</p>
+          {lists && lists.length > 0 ? (
+            lists
+              .filter((l: any) => l._id !== list?._id)
+              .slice(0, 3)
+              .map((l: any) => (
+                // onClick={nav(`/product/${l._id}`)}
+                <div
+                  className="other-item"
+                  key={l._id}
+                  onClick={() => nav(`/product/${l._id}`)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <img src={`${imgURL}${l.images[0]}`} alt={l.title} />
+                  <div className="other-item-details">
+                    <p className="item-name">{l.title}</p>
+                    <p className="item-price">{l.price} EGP</p>
+                  </div>
                 </div>
-              </div>
-            ))
+              ))
           ) : (
             <p className="no-items-text">No other items from this seller.</p>
           )}

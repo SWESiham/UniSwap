@@ -1,5 +1,3 @@
-
-
 import { Link } from "react-router-dom";
 import {
   BookOpen,
@@ -265,6 +263,7 @@ const Home = () => {
                 {category.count} {category.count === 1 ? "item" : "items"}
               </span>
               <ArrowRight className="home-category-arrow" size={17} />
+            
             </Link>
           ))}
         </div>
@@ -497,5 +496,3 @@ const Home = () => {
     </main>
   );
 };
-
-

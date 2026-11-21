@@ -7,6 +7,7 @@ export const cListing = async (data: any) => {
         return res.data.listing;
     } catch (err) {
         console.error(err);
+        throw err;
     }
 }
 
@@ -26,5 +27,34 @@ export const rUserListing = async (sellerId: string) => {
 
     } catch (err) {
         console.error(err);
+    }
+}
+
+export const uListing = async (id: string,payload:any) => {
+    try {
+        const res = await api.patch(`/listings/${id}`,payload);
+        return res.data.listing;
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+}
+
+export const sListing = async (id: string) => {
+     try {
+        const res = await api.patch(`/listings/${id}/sold`);
+        return res.data.listing;
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+}
+export const dListing = async (id: string) => {
+     try {
+        const res = await api.delete(`/listings/${id}`);
+        return res.data.listing;
+    } catch (err) {
+        console.error(err);
+        throw err;
     }
 }

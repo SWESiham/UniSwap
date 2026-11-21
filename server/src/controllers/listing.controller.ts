@@ -8,7 +8,8 @@ export const cListing = async (req: Request, res: Response) => {
         const listingData = req.body;
 
         const nListing = await cListingService(listingData, seller._id);
-
+        console.log("from server",nListing);
+        
         return res.status(201).json({
             message: "Listing created successfully",
             listing: nListing
@@ -38,10 +39,10 @@ export const uListing = async (req: Request, res: Response) => {
     try {
 
         const seller = (req as any).user;
-        const uListing = await uListingService(req.params.id as string, seller.id, req.body);
+        const listing = await uListingService(req.params.id as string, seller._id||seller.id, req.body);
         return res.status(200).json({
             message: "Listing updated successfully",
-            uListing,
+            listing,
         });
     } catch (err) {
         return ApiError(res, err, "Error updating listing");

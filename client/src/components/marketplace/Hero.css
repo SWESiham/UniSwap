@@ -1,14 +1,10 @@
-
-/* ================================
-   UniSwap - Light Theme
-   ================================ */
-
+/* 
 :root {
   --primary: #6558D3;
   --primary-hover: #5145B5;
   --primary-light: #F0EEFF;
 
-  --background: #FAFAFE;
+  --background: #0E1320;
   --surface: #FFFFFF;
   --surface-soft: #F6F5FC;
 
@@ -26,7 +22,7 @@
   --shadow-md: 0 10px 30px rgba(35, 30, 80, 0.08);
 }
 
-/* Reset */
+
 
 * {
   box-sizing: border-box;
@@ -49,7 +45,6 @@ button {
   cursor: pointer;
 }
 
-/* Hero Section */
 
 .hero {
   position: relative;
@@ -77,7 +72,7 @@ button {
   max-width: 660px;
 }
 
-/* Small Label */
+
 
 .hero-tag {
   display: inline-flex;
@@ -93,7 +88,7 @@ button {
   font-weight: 600;
 }
 
-/* Heading */
+
 
 .hero h1 {
   margin: 0;
@@ -109,7 +104,6 @@ button {
   color: var(--primary);
 }
 
-/* Description */
 
 .hero p {
   max-width: 540px;
@@ -119,7 +113,6 @@ button {
   line-height: 1.9;
 }
 
-/* Buttons */
 
 .hero-buttons {
   display: flex;
@@ -165,7 +158,6 @@ button {
   transform: translateY(-2px);
 }
 
-/* Responsive */
 
 @media (max-width: 768px) {
   .hero {
@@ -237,3 +229,4 @@ button {
     height: 280px;
   }
 }
+ */
