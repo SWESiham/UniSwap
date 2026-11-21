@@ -6,7 +6,7 @@ import categoryRoute from './routes/category.routes'
 import { errorHandler } from "./middlewares/error.middleware.js";
 import { routerMarketplaces } from "./routes/marketplace.routes.js";
 import userRoutes from "./routes/user.routes";
-// import {routerFavorite} from "./routes/favorite.routes.js";
+import {routerFavorite} from "./routes/favorite.routes.js";
 import listingRoutes from "./routes/listing.routes";
 import authRoutes from './routes/auth.routes';
 const app = express();
@@ -21,7 +21,7 @@ app.use('/api/categories', categoryRoute);
 app.get("/health", (_req, res) => res.json({ status: "ok" }));
 app.use("/listings", routerMarketplaces);
 app.use('/api/listings', listingRoutes);
-// app.use("/favorites", routerFavorite);
+app.use("/favorites", routerFavorite);
 
 app.use(errorHandler);
 
