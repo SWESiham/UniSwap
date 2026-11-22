@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 import {
   BookOpen,
@@ -496,3 +497,6 @@ export const Home = () => {
     </main>
   );
 };
+export default Home;
+
+
