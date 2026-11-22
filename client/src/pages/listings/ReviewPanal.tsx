@@ -8,17 +8,28 @@ type props = {
   onPublish: (data: any) => void;
   isPublishing?: boolean;
 };
+const reverseTypeMap: Record<string, "for_sale" | "exchange" | "both"> = {
+  sell: "for_sale",
+  exchange: "exchange",
+  both: "both",
+};
 
-export const ReviewPanal = ({ data, onBack, onPublish,isPublishing }: props) => {
+export const ReviewPanal = ({
+  data,
+  onBack,
+  onPublish,
+  isPublishing,
+}: props) => {
   // console.log(data);
-  const [meetSpot, setMeetSpot] = useState("");
+  const [meetSpot, setMeetSpot] = useState(data?.pSpot || "");
   const [saleType, setSaleType] = useState<"for_sale" | "exchange" | "both">(
-    "for_sale",
+    reverseTypeMap[data?.type] || "for_sale",
   );
   const [pContact, setPContact] = useState<"chat" | "phone" | "whatsapp">(
-    "chat",
+    data?.pContact || "chat",
   );
-  const [ExWith, setExWith] = useState("");
+  const [ExWith, setExWith] = useState(data?.exWith || "");
+  const isEdit = Boolean(data?._id);
   const imgURL = data?.images?.[0]
     ? "http://localhost:5000" + data.images[0]
     : "";
@@ -171,10 +182,15 @@ export const ReviewPanal = ({ data, onBack, onPublish,isPublishing }: props) => 
           type="button"
           className="publish-btn"
           disabled={isPublishing}
-          onClick={() => { onPublish({ saleType, meetSpot, pContact, ExWith }); console.log("clicked")}
-          }
+          onClick={() => onPublish({ saleType, meetSpot, pContact, ExWith })}
         >
-          {isPublishing ? "Publishing..." : "Publish listing"}
+          {isPublishing
+            ? isEdit
+              ? "Updating..."
+              : "Publishing..."
+            : isEdit
+              ? "Save changes"
+              : "Publish listing"}
         </button>
       </div>
     </div>

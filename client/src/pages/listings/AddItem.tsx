@@ -5,11 +5,14 @@ import { AIAnalysisPanel } from "./AIAnalysisPanel";
 import { ItemDetailsStep } from "./ItemDetailsStep";
 import { ReviewPanal } from "./ReviewPanal";
 import { SuccessStep } from "./SuccessStep";
-import { cListing } from "../../services/listings.api";
-import { useNavigate } from "react-router-dom";
+import { cListing, rListing, uListing } from "../../services/listings.api";
+import { useNavigate,useParams } from "react-router-dom";
 // TODO: update dataaa throw adding
 export const AddItem = () => {
-  const [step, setStep] = useState(1);
+   const { id } = useParams();
+  const isEditMode = Boolean(id);
+  console.log("iddd --- isEdit",id,"  ",isEditMode);
+  const [step, setStep] = useState(isEditMode?3:1);
   const [files, setFiles] = useState<File[]>([]);
   const [error, setError] = useState("");
   const [result, setResult] = useState<any>(null);
@@ -17,6 +20,8 @@ export const AddItem = () => {
   const [lang, setLang] = useState<"en" | "ar">("en");
   const [isPublishing, setIsPublishing] = useState(false);
   const [listing, setListing] = useState<any>(null);
+ 
+  
   const processFiles = async (list: File[]) => {
     if (list.length > 6) {
       setError("Max 6 photos");
@@ -64,17 +69,20 @@ export const AddItem = () => {
     setIsPublishing(true);
     try {
       console.log("additem publish", data);
-
-      const list = await cListing({
+      const payload = {
         ...result,
         brand: result.brand,
-        category: result.category.name,
+        category: result.category?._id || result.category,
         condition: result.condition?.toLowerCase().replace(/\s+/g, "_"),
         type: typeMap[data.saleType as keyof typeof typeMap],
         pSpot: data.meetSpot,
         pContact: data.pContact,
         exWith: data.saleType === "for_sale" ? undefined : data.ExWith,
-      });
+      };
+      const list = isEditMode && id ? await uListing(id, payload) : await cListing(payload);
+      
+      if (!list) return;
+      console.log("additem after list", list);
       
       setListing(list);
       setStep(5);
@@ -117,6 +125,27 @@ export const AddItem = () => {
   useEffect(() => {
     return () => previews.forEach((p) => URL.revokeObjectURL(p.url));
   }, [previews]);
+
+  useEffect(() => {
+    if (!isEditMode || !id) return;
+    const loadForEdit = async() => {
+      try {
+        const list = await rListing(id);
+        if (list) {
+          setResult(list);
+          console.log("ress" , list);
+          
+          setStep(3);
+        }
+      } catch (error) {
+        setError("Failed to load item details");
+      }
+    }
+    loadForEdit();
+  }, [id, isEditMode]);
+  useEffect(() => {
+  console.log("Updated result state:", result);
+}, [result]);
   return (
     <div className="add-item-page">
       <div className="panals">

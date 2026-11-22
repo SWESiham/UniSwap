@@ -52,3 +52,12 @@ export const rUserListingSer = async (seller:string) => {
     return Listing.find({seller}).populate("category", "name")
         .sort({ createdAt: -1 });
 }
+export const rListbyCategory = async (cat:any={}) => {
+    const query: any = {};
+    if (cat.category) {
+        query.category = cat.category;
+    }
+    return await Listing.find(query).populate('category',"name").populate("seller", "name faculty")
+    .sort({ createdAt: -1 });
+};
+

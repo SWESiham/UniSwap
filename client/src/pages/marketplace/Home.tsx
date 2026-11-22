@@ -223,7 +223,7 @@ const faqs = [
   },
 ];
 
-const Home = () => {
+export const Home = () => {
   const facultyProducts = [products[1], products[4]];
 
   const trendingProducts = [
@@ -264,6 +264,7 @@ const Home = () => {
                 {category.count} {category.count === 1 ? "item" : "items"}
               </span>
               <ArrowRight className="home-category-arrow" size={17} />
+            
             </Link>
           ))}
         </div>
@@ -497,4 +498,5 @@ const Home = () => {
   );
 };
 export default Home;
+
 

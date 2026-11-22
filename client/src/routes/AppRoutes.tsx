@@ -12,16 +12,19 @@ import ProductDetails from "../pages/listings/ProductDetails";
 
 export const AppRoutes = () => {
   return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+    <>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
-      <Route element={<MainLayout />}>
-        <Route path="/" element={<Home />} />
-        <Route path="/browse" element={<Browse />} />
-        <Route path="/add-item" element={<AddItem />} />
-        <Route path="/product/:id" element={<ProductDetails />} />
-      </Route>
-    </Routes>
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/browse" element={<Browse />} />
+          <Route path="/add-item" element={<AddItem />} />
+          <Route path="/edit-item/:id" element={<AddItem />} />
+          <Route path="/product/:id" element={<ProductDetails />} />
+        </Route>
+      </Routes>
+    </>
   );
 };
