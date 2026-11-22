@@ -3,7 +3,7 @@ import { api } from "./api";
 export const cListing = async (data: any) => {
     // console.log("api listing", data);
     try {
-        const res = await api.post('/listings', data);
+        const res = await api.post('api/listings', data);
         return res.data.listing;
     } catch (err) {
         console.error(err);
@@ -13,7 +13,7 @@ export const cListing = async (data: any) => {
 
 export const rListing = async (id: string) => {
     try {
-        const res = await api.get(`/listings/${id}`);
+        const res = await api.get(`api/listings/${id}`);
         return res.data.listing;
     } catch (err) {
         console.error(err);
@@ -22,7 +22,7 @@ export const rListing = async (id: string) => {
 
 export const rUserListing = async (sellerId: string) => {
     try {
-        const res = await api.get(`/listings/user/${sellerId}`);
+        const res = await api.get(`api/listings/user/${sellerId}`);
         return res.data;
 
     } catch (err) {
@@ -32,7 +32,7 @@ export const rUserListing = async (sellerId: string) => {
 
 export const uListing = async (id: string,payload:any) => {
     try {
-        const res = await api.patch(`/listings/${id}`,payload);
+        const res = await api.patch(`api/listings/${id}`,payload);
         return res.data.listing;
     } catch (err) {
         console.error(err);
@@ -42,7 +42,7 @@ export const uListing = async (id: string,payload:any) => {
 
 export const sListing = async (id: string) => {
      try {
-        const res = await api.patch(`/listings/${id}/sold`);
+        const res = await api.patch(`api/listings/${id}/sold`);
         return res.data.listing;
     } catch (err) {
         console.error(err);
@@ -51,7 +51,7 @@ export const sListing = async (id: string) => {
 }
 export const dListing = async (id: string) => {
      try {
-        const res = await api.delete(`/listings/${id}`);
+        const res = await api.delete(`api/listings/${id}`);
         return res.data.listing;
     } catch (err) {
         console.error(err);
@@ -61,7 +61,7 @@ export const dListing = async (id: string) => {
 
 export const rCategoryListings = async (categoryId: string) => {
   try {
-    const res = await api.get(`/listings?category=${categoryId}`);
+    const res = await api.get(`api/listings?category=${categoryId}`);
     return res.data.listings || res.data;
   } catch (err) {
     console.error(err);

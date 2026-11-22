@@ -1,13 +1,8 @@
-
-/* ================================
-   HOME PAGE
-================================ */
-
 .home-page {
   width: 100%;
   overflow: hidden;
-  background: #fafafe;
-  color: #20213a;
+  background: #0d101b;
+  color: #ffffff;
 }
 
 .home-section {
@@ -19,12 +14,8 @@
 .home-soft-section {
   width: 100%;
   padding: 76px max(24px, calc((100% - 1180px) / 2));
-  background: #f4f3fc;
+  background: #111524;
 }
-
-/* ================================
-   SECTION HEADINGS
-================================ */
 
 .home-section-heading {
   display: flex;
@@ -37,7 +28,7 @@
 .home-eyebrow {
   display: inline-block;
   margin-bottom: 10px;
-  color: #6558d3;
+  color: #7b73ff;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 1.6px;
@@ -45,7 +36,7 @@
 
 .home-section-heading h2 {
   margin: 0;
-  color: #20213a;
+  color: #ffffff;
   font-size: clamp(25px, 3vw, 34px);
   line-height: 1.25;
   font-weight: 750;
@@ -54,7 +45,7 @@
 
 .home-section-heading p {
   margin: 10px 0 0;
-  color: #77788b;
+  color: #94a3b8;
   font-size: 14px;
   line-height: 1.7;
 }
@@ -64,15 +55,16 @@
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
-  color: #6558d3;
+  color: #7b73ff;
   font-size: 14px;
   font-weight: 700;
   text-decoration: none;
-  transition: gap 0.2s ease;
+  transition: gap 0.2s ease, color 0.2s ease;
 }
 
 .home-text-link:hover {
   gap: 13px;
+  color: #9b95ff;
 }
 
 .home-centered-action {
@@ -87,10 +79,10 @@
   justify-content: center;
   gap: 10px;
   padding: 13px 22px;
-  border: 1px solid #dedbf5;
+  border: 1px solid rgba(123, 115, 255, 0.35);
   border-radius: 10px;
-  color: #6558d3;
-  background: #fff;
+  color: #9b95ff;
+  background: #161b2c;
   font-size: 14px;
   font-weight: 700;
   text-decoration: none;
@@ -98,14 +90,11 @@
 }
 
 .home-outline-button:hover {
-  border-color: #6558d3;
-  background: #f0eeff;
+  border-color: #7b73ff;
+  background: #6558d3;
+  color: #ffffff;
   transform: translateY(-2px);
 }
-
-/* ================================
-   FEATURED CATEGORIES
-================================ */
 
 .home-categories-grid {
   display: grid;
@@ -122,9 +111,9 @@
   justify-content: center;
   padding: 23px;
   overflow: hidden;
-  border: 1px solid #eeedf5;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
-  background: #fff;
+  background: #161b2c;
   text-decoration: none;
   transition:
     transform 0.25s ease,
@@ -134,8 +123,8 @@
 
 .home-category-card:hover {
   z-index: 1;
-  border-color: #c9c3fa;
-  box-shadow: 0 13px 28px rgba(76, 63, 166, 0.12);
+  border-color: rgba(123, 115, 255, 0.5);
+  box-shadow: 0 13px 28px rgba(101, 88, 211, 0.18);
   transform: translateY(-7px) scale(1.025);
 }
 
@@ -147,8 +136,8 @@
   justify-content: center;
   margin-bottom: 18px;
   border-radius: 14px;
-  color: #6558d3;
-  background: #f0eeff;
+  color: #7b73ff;
+  background: rgba(101, 88, 211, 0.15);
   transition: all 0.25s ease;
 }
 
@@ -159,22 +148,22 @@
 }
 
 .home-category-card:hover .home-category-icon {
-  color: #fff;
+  color: #ffffff;
   background: #6558d3;
-  box-shadow: 0 0 0 6px rgba(101, 88, 211, 0.12),
-    0 5px 16px rgba(101, 88, 211, 0.3);
+  box-shadow: 0 0 0 6px rgba(101, 88, 211, 0.15),
+    0 5px 16px rgba(101, 88, 211, 0.35);
   transform: scale(1.08) rotate(-4deg);
 }
 
 .home-category-card h3 {
   margin: 0 0 6px;
-  color: #24243e;
+  color: #ffffff;
   font-size: 16px;
   font-weight: 750;
 }
 
 .home-category-card > span {
-  color: #9292a3;
+  color: #94a3b8;
   font-size: 12px;
 }
 
@@ -182,21 +171,17 @@
   position: absolute;
   right: 19px;
   bottom: 20px;
-  color: #aaa7c0;
+  color: #64748b;
   opacity: 0;
   transform: translateX(-5px);
   transition: all 0.25s ease;
 }
 
 .home-category-card:hover .home-category-arrow {
-  color: #6558d3;
+  color: #7b73ff;
   opacity: 1;
   transform: translateX(0);
 }
-
-/* ================================
-   PRODUCT CARDS
-================================ */
 
 .home-products-grid {
   display: grid;
@@ -215,9 +200,9 @@
 .home-product-card {
   min-width: 0;
   overflow: hidden;
-  border: 1px solid #eeedf5;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 15px;
-  background: #fff;
+  background: #161b2c;
   transition:
     transform 0.25s ease,
     box-shadow 0.25s ease,
@@ -225,8 +210,8 @@
 }
 
 .home-product-card:hover {
-  border-color: #dedaf8;
-  box-shadow: 0 12px 28px rgba(40, 35, 90, 0.09);
+  border-color: rgba(123, 115, 255, 0.5);
+  box-shadow: 0 12px 28px rgba(101, 88, 211, 0.18);
   transform: translateY(-5px);
 }
 
@@ -235,7 +220,7 @@
   display: block;
   height: 190px;
   overflow: hidden;
-  background: #f0eff7;
+  background: #1e2438;
 }
 
 .home-product-image img {
@@ -256,8 +241,8 @@
   height: 100%;
   align-items: center;
   justify-content: center;
-  color: #aaa4dc;
-  background: linear-gradient(135deg, #f2f0ff, #e8e6f8);
+  color: #7b73ff;
+  background: linear-gradient(135deg, #1a2035, #14192b);
 }
 
 .home-match-badge {
@@ -265,10 +250,10 @@
   top: 12px;
   left: 12px;
   padding: 7px 10px;
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(123, 115, 255, 0.4);
   border-radius: 20px;
-  color: #5145b5;
-  background: rgba(255, 255, 255, 0.94);
+  color: #ffffff;
+  background: rgba(101, 88, 211, 0.9);
   font-size: 10px;
   font-weight: 750;
 }
@@ -290,22 +275,22 @@
   align-items: center;
   padding: 5px 8px;
   border-radius: 6px;
-  color: #278565;
-  background: #272B37;
+  color: #34d399;
+  background: rgba(52, 211, 153, 0.12);
   font-size: 10px;
   font-weight: 700;
 }
 
 .home-sale-tag {
-  color: #6558d3;
-  background: #272B37;
+  color: #9b95ff;
+  background: rgba(123, 115, 255, 0.15);
 }
 
 .home-product-name {
   display: -webkit-box;
   min-height: 43px;
   overflow: hidden;
-  color: #292940;
+  color: #ffffff;
   font-size: 14px;
   font-weight: 700;
   line-height: 1.55;
@@ -315,7 +300,7 @@
 }
 
 .home-product-name:hover {
-  color: #6558d3;
+  color: #9b95ff;
 }
 
 .home-product-bottom {
@@ -327,7 +312,7 @@
 }
 
 .home-product-bottom strong {
-  color: #6558d3;
+  color: #7b73ff;
   font-size: 16px;
   font-weight: 800;
 }
@@ -336,7 +321,7 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  color: #9999a8;
+  color: #8f96b2;
   font-size: 10px;
   white-space: nowrap;
 }
@@ -347,14 +332,10 @@
   gap: 5px;
   margin-top: 12px;
   padding-top: 11px;
-  border-top: 1px solid #f0eff5;
-  color: #88889a;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: #8f96b2;
   font-size: 11px;
 }
-
-/* ================================
-   FACULTY PROMO
-================================ */
 
 .home-faculty-promo {
   display: flex;
@@ -363,9 +344,9 @@
   align-items: flex-start;
   justify-content: center;
   padding: 27px;
-  border: 1px solid #e5e1ff;
+  border: 1px solid rgba(123, 115, 255, 0.25);
   border-radius: 15px;
-  background: linear-gradient(145deg, #f0eeff, #fff);
+  background: linear-gradient(145deg, #1d2238, #141828);
 }
 
 .home-promo-icon {
@@ -376,19 +357,19 @@
   justify-content: center;
   margin-bottom: 20px;
   border-radius: 15px;
-  color: #6558d3;
-  background: #fff;
+  color: #7b73ff;
+  background: rgba(101, 88, 211, 0.16);
 }
 
 .home-faculty-promo h3 {
   margin: 0 0 10px;
-  color: #292640;
+  color: #ffffff;
   font-size: 19px;
 }
 
 .home-faculty-promo p {
   margin: 0 0 20px;
-  color: #77778b;
+  color: #94a3b8;
   font-size: 13px;
   line-height: 1.8;
 }
@@ -397,15 +378,15 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: #6558d3;
+  color: #7b73ff;
   font-size: 13px;
   font-weight: 750;
   text-decoration: none;
 }
 
-/* ================================
-   STUDENT REQUESTS
-================================ */
+.home-faculty-promo a:hover {
+  color: #9b95ff;
+}
 
 .home-requests-section {
   padding-top: 65px;
@@ -419,15 +400,15 @@
 
 .home-request-card {
   padding: 23px;
-  border: 1px solid #eeedf5;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 15px;
-  background: #fff;
+  background: #161b2c;
   transition: all 0.25s ease;
 }
 
 .home-request-card:hover {
-  border-color: #d5d0f7;
-  box-shadow: 0 10px 25px rgba(40, 35, 90, 0.07);
+  border-color: rgba(123, 115, 255, 0.45);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
   transform: translateY(-4px);
 }
 
@@ -443,14 +424,14 @@
 .home-request-category {
   padding: 6px 10px;
   border-radius: 7px;
-  color: #6558d3;
-  background: #f0eeff;
+  color: #9b95ff;
+  background: rgba(101, 88, 211, 0.16);
   font-size: 11px;
   font-weight: 750;
 }
 
 .home-request-budget {
-  color: #27936e;
+  color: #34d399;
   font-size: 12px;
   font-weight: 750;
 }
@@ -458,7 +439,7 @@
 .home-request-card h3 {
   min-height: 52px;
   margin: 0 0 23px;
-  color: #292940;
+  color: #ffffff;
   font-size: 15px;
   line-height: 1.65;
 }
@@ -478,8 +459,8 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  color: #6558d3;
-  background: #efedff;
+  color: #9b95ff;
+  background: rgba(101, 88, 211, 0.2);
   font-size: 14px;
   font-weight: 800;
 }
@@ -487,7 +468,7 @@
 .home-request-user strong,
 .home-testimonial-user strong {
   display: block;
-  color: #34334b;
+  color: #e2e8f0;
   font-size: 12px;
 }
 
@@ -495,18 +476,14 @@
 .home-testimonial-user span {
   display: block;
   margin-top: 4px;
-  color: #9999a8;
+  color: #8f96b2;
   font-size: 11px;
 }
-
-/* ================================
-   WHY UNISWAP
-================================ */
 
 .home-why-section {
   width: 100%;
   padding: 80px max(24px, calc((100% - 1180px) / 2));
-  background: #f4f3fc;
+  background: #111524;
 }
 
 .home-center-heading {
@@ -522,16 +499,16 @@
 
 .home-benefit-card {
   padding: 26px 22px;
-  border: 1px solid #eeedf5;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 15px;
-  background: #fff;
+  background: #161b2c;
   text-align: center;
   transition: all 0.25s ease;
 }
 
 .home-benefit-card:hover {
-  border-color: #d7d2fa;
-  box-shadow: 0 12px 25px rgba(40, 35, 90, 0.07);
+  border-color: rgba(123, 115, 255, 0.45);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
   transform: translateY(-5px);
 }
 
@@ -543,8 +520,8 @@
   justify-content: center;
   margin: 0 auto 18px;
   border-radius: 16px;
-  color: #6558d3;
-  background: #f0eeff;
+  color: #7b73ff;
+  background: rgba(101, 88, 211, 0.16);
 }
 
 .home-benefit-icon svg {
@@ -554,20 +531,16 @@
 
 .home-benefit-card h3 {
   margin: 0 0 10px;
-  color: #292940;
+  color: #ffffff;
   font-size: 15px;
 }
 
 .home-benefit-card p {
   margin: 0;
-  color: #858597;
+  color: #94a3b8;
   font-size: 12px;
   line-height: 1.8;
 }
-
-/* ================================
-   TESTIMONIALS
-================================ */
 
 .home-testimonials-grid {
   display: grid;
@@ -577,14 +550,15 @@
 
 .home-testimonial-card {
   padding: 25px;
-  border: 1px solid #eeedf5;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 15px;
-  background: #fff;
+  background: #161b2c;
   transition: all 0.25s ease;
 }
 
 .home-testimonial-card:hover {
-  box-shadow: 0 12px 25px rgba(40, 35, 90, 0.07);
+  border-color: rgba(123, 115, 255, 0.45);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
   transform: translateY(-4px);
 }
 
@@ -598,14 +572,10 @@
 .home-testimonial-card > p {
   min-height: 90px;
   margin: 0 0 22px;
-  color: #55556c;
+  color: #cbd5e1;
   font-size: 14px;
   line-height: 1.9;
 }
-
-/* ================================
-   FAQ
-================================ */
 
 .home-faq-section {
   padding-top: 60px;
@@ -620,9 +590,9 @@
 .home-faq-item {
   margin-bottom: 12px;
   overflow: hidden;
-  border: 1px solid #eeedf5;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
-  background: #fff;
+  background: #161b2c;
 }
 
 .home-faq-item summary {
@@ -631,7 +601,7 @@
   align-items: center;
   gap: 15px;
   padding: 19px 21px;
-  color: #292940;
+  color: #ffffff;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
@@ -644,7 +614,7 @@
 
 .home-faq-item summary svg {
   flex-shrink: 0;
-  color: #6558d3;
+  color: #7b73ff;
   transition: transform 0.2s ease;
 }
 
@@ -655,14 +625,10 @@
 .home-faq-item > p {
   margin: 0;
   padding: 0 21px 20px;
-  color: #77778b;
+  color: #94a3b8;
   font-size: 13px;
   line-height: 1.8;
 }
-
-/* ================================
-   FINAL CTA
-================================ */
 
 .home-final-cta {
   position: relative;
@@ -675,7 +641,7 @@
   padding: 55px 25px;
   overflow: hidden;
   border-radius: 24px;
-  background: linear-gradient(120deg, #6558d3, #8175e8);
+  background: linear-gradient(120deg, #5346c9, #7467e3);
   text-align: center;
 }
 
@@ -694,7 +660,7 @@
 
 .home-cta-content h2 {
   margin: 15px 0 12px;
-  color: #fff;
+  color: #ffffff;
   font-size: clamp(25px, 4vw, 36px);
   font-weight: 800;
   letter-spacing: -0.7px;
@@ -732,8 +698,8 @@
 }
 
 .home-cta-primary {
-  color: #6558d3;
-  background: #fff;
+  color: #5346c9;
+  background: #ffffff;
 }
 
 .home-cta-primary:hover {
@@ -743,13 +709,13 @@
 
 .home-cta-secondary {
   border-color: rgba(255, 255, 255, 0.55);
-  color: #fff;
+  color: #ffffff;
   background: transparent;
 }
 
 .home-cta-secondary:hover {
-  color: #6558d3;
-  background: #fff;
+  color: #5346c9;
+  background: #ffffff;
   transform: translateY(-3px);
 }
 
@@ -773,10 +739,6 @@
   right: -140px;
   bottom: -250px;
 }
-
-/* ================================
-   RESPONSIVE
-================================ */
 
 @media (max-width: 1000px) {
   .home-categories-grid,

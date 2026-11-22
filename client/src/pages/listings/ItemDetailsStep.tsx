@@ -32,7 +32,7 @@ export const ItemDetailsStep = ({
     const fetchCats = async () => {
       try {
         setCatsLoading(true);
-        const cats = await api.get("/categories");
+        const cats = await api.get("api/categories");
         setCategories(cats.data);
         console.log(cats.data);
       } catch (err) {

@@ -63,7 +63,7 @@ export const Navbar = () => {
             </div>
             <span className="brand-name">UniSwap</span>
           </Link>
-        </div>
+     
 
         <div className="navbar-links">
           {NAV_LINKS.map((link) => (
@@ -72,15 +72,16 @@ export const Navbar = () => {
             </Link>
           ))}
         </div>
+           </div>
 
-        <div className="navbar-search">
+        {/* <div className="navbar-search">
           <Search className="search-icon" size={18} />
           <input
             type="text"
             placeholder="Search for books, calculators..."
             className="search-input"
           />
-        </div>
+        </div> */}
 
         <div className="navbar-actions">
           {/* <div className="lang-switcher hide-on-tablet">
@@ -89,9 +90,9 @@ export const Navbar = () => {
             <button className="lang-btn">ع</button>
           </div> */}
 
-          <button className="action-btn hide-on-mobile" aria-label="Toggle Theme">
+          {/* <button className="action-btn hide-on-mobile" aria-label="Toggle Theme">
             <Moon size={18} />
-          </button>
+          </button> */}
 
           <button className="action-btn badge-container hide-on-mobile">
             <Heart size={20} />
