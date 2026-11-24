@@ -1,9 +1,9 @@
-import api from "./api";
+import {api} from "./api";
 export async function analyzeImages(files: File[], lang: 'en' | 'ar') {
     const form = new FormData();
     for (const f of files)
         form.append('images', f);
     form.append("lang", lang);
-    const res = await api.post("/ai/analyze", form);
+    const res = await api.post("api/ai/analyze", form);
     return res.data;
 }

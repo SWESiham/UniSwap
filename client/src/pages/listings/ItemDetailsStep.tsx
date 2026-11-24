@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import api from "../../services/api";
+import { api } from "../../services/api";
 import "./ItemDetailsStep.css";
+import { useParams } from "react-router-dom";
+import { rListing } from "../../services/listings.api";
 
 type Props = {
   initData: any;
@@ -24,12 +26,13 @@ export const ItemDetailsStep = ({
   const [price, setPrice] = useState(initData?.price || "");
   const [categories, setCategories] = useState<any[]>([]);
   const [catsLoading, setCatsLoading] = useState(false);
-
+  const { id } = useParams();
+  const isEditMode = Boolean(id);
   useEffect(() => {
     const fetchCats = async () => {
       try {
         setCatsLoading(true);
-        const cats = await api.get("/categories");
+        const cats = await api.get("api/categories");
         setCategories(cats.data);
         console.log(cats.data);
       } catch (err) {
@@ -48,26 +51,40 @@ export const ItemDetailsStep = ({
       brand,
       condition,
       description,
-      price: Number(price)
+      price: Number(price),
     });
   };
+
+  useEffect(() => {
+    if (!initData) return;
+    setTitle(initData.title || "");
+    setCategory(
+      initData.categoryId || initData.category?._id || initData.category || "",
+    );
+    setBrand(initData.brand || "");
+    setCondition(formatCondition(initData.condition));
+    setDescription(initData.description || "");
+    setPrice(initData.price ?? "");
+  }, [initData]);
   return (
     <>
       <div className="details-card">
-        <div className="ai-banner">
-          <div className="ai-message">
-            <span className="check-icon">✓</span>
-            <span>We filled in what we found. Edit anything you like.</span>
+        {!isEditMode && (
+          <div className="ai-banner">
+            <div className="ai-message">
+              <span className="check-icon">✓</span>
+              <span>We filled in what we found. Edit anything you like.</span>
+            </div>
+            <button
+              type="button"
+              className="regenrate-btn"
+              onClick={() => onRegenrateLang(lang === "en" ? "ar" : "en")}
+            >
+              <i className="fa-solid fa-rotate"></i>
+              Regenerate in {lang === "en" ? "Arabic" : "English"}
+            </button>
           </div>
-          <button
-            type="button"
-            className="regenrate-btn"
-            onClick={() => onRegenrateLang(lang === "en" ? "ar" : "en")}
-          >
-            <i className="fa-solid fa-rotate"></i>
-            Regenerate in {lang === "en" ? "Arabic" : "English"}
-          </button>
-        </div>
+        )}
         <div className="form-group">
           <label>
             Title
@@ -199,4 +216,13 @@ export const ItemDetailsStep = ({
       </div>
     </>
   );
+};
+const formatCondition = (val?: string) => {
+  if (!val) return "Like New";
+  const map: Record<string, string> = {
+    new: "New",
+    like_new: "Like New",
+    used: "Used",
+  };
+  return map[val.toLowerCase()] || val;
 };

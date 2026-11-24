@@ -13,3 +13,10 @@ export const registerSchema = z.object({
 }).strict(); // بنرفض أي حقول زيادة، زي role أو isBlocked.
 
 export type RegisterInput = z.infer<typeof registerSchema>;
+
+export const loginSchema = z.object({
+    email: z.string().trim().toLowerCase().email(),
+    password: z.string().min(1).max(200),
+}).strict();
+
+export type LoginInput = z.infer<typeof loginSchema>;

@@ -1,0 +1,94 @@
+.home-product-card {
+  background: white;
+  border: 1px solid #EAE9F2;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.home-product-image {
+  display: block;
+  position: relative;
+  height: 180px;
+}
+
+.home-product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.home-product-info {
+  padding: 16px;
+}
+
+.home-product-tags,
+.home-product-bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.home-product-name {
+  display: block;
+  margin: 12px 0;
+  color: #20213A;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.home-product-faculty {
+  margin-top: 10px;
+  color: #77788B;
+}
+
+.home-match-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #6558D3;
+  color: white;
+  padding: 5px 9px;
+  border-radius: 20px;
+  font-size: 11px;
+}
+
+.home-image-placeholder {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  background: #F0EEFF;
+}
+
+
+.home-product-card {
+    position: relative;
+}
+
+.favorite-button {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 50%;
+    background: white;
+    color: #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.favorite-button.active {
+    color: #e54865;
+}
+
+.favorite-button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+

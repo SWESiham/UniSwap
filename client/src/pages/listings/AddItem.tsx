@@ -3,14 +3,25 @@ import { analyzeImages } from "../../services/ai.api";
 import "./AddItem.css";
 import { AIAnalysisPanel } from "./AIAnalysisPanel";
 import { ItemDetailsStep } from "./ItemDetailsStep";
-
+import { ReviewPanal } from "./ReviewPanal";
+import { SuccessStep } from "./SuccessStep";
+import { cListing, rListing, uListing } from "../../services/listings.api";
+import { useNavigate,useParams } from "react-router-dom";
+// TODO: update dataaa throw adding
 export const AddItem = () => {
-  const [step, setStep] = useState(1);
+   const { id } = useParams();
+  const isEditMode = Boolean(id);
+  console.log("iddd --- isEdit",id,"  ",isEditMode);
+  const [step, setStep] = useState(isEditMode?3:1);
   const [files, setFiles] = useState<File[]>([]);
   const [error, setError] = useState("");
   const [result, setResult] = useState<any>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [lang, setLang] = useState<"en" | "ar">("en");
+  const [isPublishing, setIsPublishing] = useState(false);
+  const [listing, setListing] = useState<any>(null);
+ 
+  
   const processFiles = async (list: File[]) => {
     if (list.length > 6) {
       setError("Max 6 photos");
@@ -25,6 +36,7 @@ export const AddItem = () => {
     setError("");
     setFiles(list);
   };
+  const nav = useNavigate();
   const handleFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
     const list = Array.from(e.target.files ?? []);
     processFiles(list);
@@ -43,9 +55,47 @@ export const AddItem = () => {
   const clearAll = async () => {
     return setFiles([]);
   };
-
+  const typeMap = {
+    for_sale: "sell",
+    exchange: "exchange",
+    both: "both",
+  } as const;
+  
+  // const HandleCat = async (id:string) => {
+  //   const catName = 
+  // }
   const handleScan = async () => RegenerateAI("en");
-
+  const handlePublish = async (data: any) => {
+    setIsPublishing(true);
+    try {
+      console.log("additem publish", data);
+      const payload = {
+        ...result,
+        brand: result.brand,
+        category: result.category?._id || result.category,
+        condition: result.condition?.toLowerCase().replace(/\s+/g, "_"),
+        type: typeMap[data.saleType as keyof typeof typeMap],
+        pSpot: data.meetSpot,
+        pContact: data.pContact,
+        exWith: data.saleType === "for_sale" ? undefined : data.ExWith,
+      };
+      const list = isEditMode && id ? await uListing(id, payload) : await cListing(payload);
+      
+      if (!list) return;
+      console.log("additem after list", list);
+      
+      setListing(list);
+      setStep(5);
+    } catch (err: any) {
+      setError(
+        err.response?.data?.message ||
+          err.message ||
+          "Publish failed, try again",
+      );
+    } finally {
+      setIsPublishing(false);
+    }
+  };
   const RegenerateAI = async (lang: "en" | "ar") => {
     setStep(2);
     setError("");
@@ -64,10 +114,38 @@ export const AddItem = () => {
     () => files.map((f) => ({ file: f, url: URL.createObjectURL(f) })),
     [files],
   );
+  const handleDetailsNext = (data: any) => {
+    setResult((prev: any) => ({
+      ...prev,
+      ...data,
+    }));
 
+    setStep(4);
+  };
   useEffect(() => {
     return () => previews.forEach((p) => URL.revokeObjectURL(p.url));
   }, [previews]);
+
+  useEffect(() => {
+    if (!isEditMode || !id) return;
+    const loadForEdit = async() => {
+      try {
+        const list = await rListing(id);
+        if (list) {
+          setResult(list);
+          console.log("ress" , list);
+          
+          setStep(3);
+        }
+      } catch (error) {
+        setError("Failed to load item details");
+      }
+    }
+    loadForEdit();
+  }, [id, isEditMode]);
+  useEffect(() => {
+  console.log("Updated result state:", result);
+}, [result]);
   return (
     <div className="add-item-page">
       <div className="panals">
@@ -82,132 +160,140 @@ export const AddItem = () => {
                 </button>
               </div>
             )}
-            <h2 id="add-item">Add a new item</h2>
-            <p id="para-add-item">Photos first — our AI writes the rest</p>
-            <div className="progress">
-              <div
-                className={`steps ${step === 1 ? "active" : step > 1 ? "done" : ""}`}
-              >
-                {step > 1 ? (
-                  <p>
-                    <i className="fa-solid fa-check"></i>
-                  </p>
-                ) : (
-                  <p>1</p>
-                )}
-                Photos
-              </div>
-              <hr className={step > 1 ? "done" : ""} />
-              <div
-                className={`steps ${step === 2 ? "active" : step > 2 ? "done" : ""}`}
-              >
-                {step > 2 ? (
-                  <p>
-                    <i className="fa-solid fa-check"></i>
-                  </p>
-                ) : (
-                  <p>2</p>
-                )}
-                AI analysis
-              </div>
-              <hr className={step > 2 ? "done" : ""} />
-              <div
-                className={`steps ${step === 3 ? "active" : step > 3 ? "done" : ""}`}
-              >
-                {step > 3 ? (
-                  <p>
-                    <i className="fa-solid fa-check"></i>
-                  </p>
-                ) : (
-                  <p>3</p>
-                )}
-                Details
-              </div>
-              <hr className={step > 3 ? "done" : ""} />
-              <div
-                className={`steps ${step === 4 ? "active" : step > 4 ? "done" : ""}`}
-              >
-                {step > 4 ? (
-                  <p>
-                    <i className="fa-solid fa-check"></i>
-                  </p>
-                ) : (
-                  <p>4</p>
-                )}
-                Review
-              </div>
-            </div>
+            {step !== 5 && (
+              <>
+                {" "}
+                <h2 id="add-item">Add a new item</h2>
+                <p id="para-add-item">Photos first — our AI writes the rest</p>
+                <div className="progress">
+                  <div
+                    className={`steps ${step === 1 ? "active" : step > 1 ? "done" : ""}`}
+                  >
+                    {step > 1 ? (
+                      <p>
+                        <i className="fa-solid fa-check"></i>
+                      </p>
+                    ) : (
+                      <p>1</p>
+                    )}
+                    Photos
+                  </div>
+                  <hr className={step > 1 ? "done" : ""} />
+                  <div
+                    className={`steps ${step === 2 ? "active" : step > 2 ? "done" : ""}`}
+                  >
+                    {step > 2 ? (
+                      <p>
+                        <i className="fa-solid fa-check"></i>
+                      </p>
+                    ) : (
+                      <p>2</p>
+                    )}
+                    AI analysis
+                  </div>
+                  <hr className={step > 2 ? "done" : ""} />
+                  <div
+                    className={`steps ${step === 3 ? "active" : step > 3 ? "done" : ""}`}
+                  >
+                    {step > 3 ? (
+                      <p>
+                        <i className="fa-solid fa-check"></i>
+                      </p>
+                    ) : (
+                      <p>3</p>
+                    )}
+                    Details
+                  </div>
+                  <hr className={step > 3 ? "done" : ""} />
+                  <div
+                    className={`steps ${step === 4 ? "active" : step > 4 ? "done" : ""}`}
+                  >
+                    {step > 4 ? (
+                      <p>
+                        <i className="fa-solid fa-check"></i>
+                      </p>
+                    ) : (
+                      <p>4</p>
+                    )}
+                    Review
+                  </div>
+                </div>
+              </>
+            )}
+
             {step === 1 && (
               <>
-                <label
-                  className={`dropzone ${isDragging ? "dragging" : ""}`}
-                  onDragEnter={(e) => {
-                    e.preventDefault();
-                    setIsDragging(true);
-                  }}
-                  onDragOver={(e) => e.preventDefault()}
-                  onDragLeave={() => setIsDragging(false)}
-                  onDrop={(e) => {
-                    e.preventDefault();
-                    setIsDragging(false);
-                    const list = Array.from(e.dataTransfer.files);
-                    processFiles(list);
-                  }}
-                >
-                  <img
-                    className="img-icon"
-                    width="35"
-                    height="35"
-                    src="/icons8-image-plus-24.ico"
-                  />
-                  <input
-                    type="file"
-                    multiple
-                    accept="image/png,image/jpeg"
-                    onChange={handleFiles}
-                    hidden
-                  />
-                  <strong>Drag photos here or click to browse</strong>
-                  <span>Up to 6 photos, JPG or PNG</span>
-                </label>
-                <div className="previews">
-                  {previews.map(({ file: f, url }, index) => (
-                    <div
-                      className="thumb"
-                      key={`${f.name}-${f.lastModified}-${f.size}`}
-                    >
-                      <img src={url} alt={f.name} />
-                      {index === 0 && (
-                        <span className="badge badge-cover">Cover</span>
-                      )}
-                      {index > 0 && (
-                        <span
-                          className="badge badge-action"
-                          onClick={() => makeMeCover(f)}
-                        >
-                          Make cover
-                        </span>
-                      )}
-
-                      <button
-                        className="remove"
-                        title={`Remove ${f.name}`}
-                        onClick={() => remove(f)}
-                      >
-                        X
-                      </button>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="actions">
-                  <button
-                    className="btn-primary"
-                    disabled={files.length === 0}
-                    onClick={handleScan}
+                <div className="collection">
+                  <label
+                    className={`dropzone ${isDragging ? "dragging" : ""}`}
+                    onDragEnter={(e) => {
+                      e.preventDefault();
+                      setIsDragging(true);
+                    }}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDragLeave={() => setIsDragging(false)}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      setIsDragging(false);
+                      const list = Array.from(e.dataTransfer.files);
+                      processFiles(list);
+                    }}
                   >
-                    Analyze with AI
-                  </button>
+                    <img
+                      className="img-icon"
+                      width="35"
+                      height="35"
+                      src="/icons8-image-plus-24.ico"
+                    />
+                    <input
+                      type="file"
+                      multiple
+                      accept="image/png,image/jpeg"
+                      onChange={handleFiles}
+                      hidden
+                    />
+                    <strong>Drag photos here or click to browse</strong>
+                    <span>Up to 6 photos, JPG or PNG</span>
+                  </label>
+                  <div className="previews">
+                    {previews.map(({ file: f, url }, index) => (
+                      <div
+                        className="thumb"
+                        key={`${f.name}-${f.lastModified}-${f.size}`}
+                      >
+                        <img src={url} alt={f.name} />
+                        {index === 0 && (
+                          <span className="badge badge-cover">Cover</span>
+                        )}
+                        {index > 0 && (
+                          <span
+                            className="badge badge-action"
+                            onClick={() => makeMeCover(f)}
+                          >
+                            Make cover
+                          </span>
+                        )}
+
+                        <button
+                          className="remove"
+                          title={`Remove ${f.name}`}
+                          onClick={() => remove(f)}
+                        >
+                          X
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="actions">
+                    <button
+                      className="btn-primary"
+                      disabled={files.length === 0}
+                      onClick={handleScan}
+                    >
+                      Analyze with AI
+                    </button>
+                  </div>
                 </div>
               </>
             )}
@@ -228,12 +314,37 @@ export const AddItem = () => {
               key={lang}
               lang={lang}
               initData={result}
-              onNext={() => setStep(4)}
+              onNext={handleDetailsNext}
               onBack={() => setStep(1)}
               onRegenrateLang={(lang) => RegenerateAI(lang)}
             />
           )}
         </div>
+        {step === 4 && (
+          <>
+            <ReviewPanal
+              data={result}
+              onBack={() => setStep(3)}
+              onPublish={handlePublish}
+              isPublishing={isPublishing}
+            />
+          </>
+        )}
+        {step === 5 && (
+          <>
+            <SuccessStep
+              addItem={() => {
+                setStep(1);
+                setFiles([]);
+                setResult(null);
+                setListing(null);
+                setError("");
+              }}
+              listingId={listing._id}
+              listing={listing}
+            />
+          </>
+        )}
       </div>
     </div>
   );

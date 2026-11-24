@@ -9,6 +9,9 @@ export interface IUser {
     department?: string;
     role: "user" | "admin";
     isBlocked: boolean;
+    tokenVersion: number;
+    resetTokenHash?: string;
+    resetTokenExpires?: Date;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -42,6 +45,9 @@ const userSchema = new Schema<IUser>(
             default: "user",
         },
         isBlocked: { type: Boolean, default: false },
+        tokenVersion: { type: Number, default: 0 },
+        resetTokenHash: { type: String, select: false },
+        resetTokenExpires: { type: Date, select: false },
     },
     // Mongoose بيضيف createdAt وupdatedAt ويديرهم تلقائيًا.
     { timestamps: true }
@@ -49,3 +55,4 @@ const userSchema = new Schema<IUser>(
 
 // الاسم User هو نفس الاسم المستخدم في علاقات الإعلانات والمفضلة.
 export default mongoose.model<IUser>("User", userSchema);
+

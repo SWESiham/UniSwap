@@ -1,0 +1,36 @@
+
+.favorites-page {
+    width: min(1440px, 92%);
+    margin: 0 auto;
+    padding: 48px 0 70px;
+}
+
+.favorites-header {
+    margin-bottom: 30px;
+}
+
+.favorites-header h1 {
+    margin-bottom: 8px;
+}
+
+.favorites-header p {
+    color: var(--text-secondary, #777);
+}
+
+.favorites-page .browse-products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+}
+
+@media (max-width: 900px) {
+    .favorites-page .browse-products-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 550px) {
+    .favorites-page .browse-products-grid {
+        grid-template-columns: 1fr;
+    }
+}

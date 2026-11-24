@@ -1,9 +1,9 @@
 .add-item-page {
   box-sizing: border-box;
-  max-width: 880px;
+  max-width: 1000px;
   min-height: 80vh;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 20px;
   color: #fff;
   font-family: Inter, system-ui, sans-serif;
 }
@@ -78,11 +78,11 @@
 }
 
 .card {
-  background: #161d2b;
-  border: 1px solid #2a3447;
+ 
   border-radius: 24px;
   padding: 32px;
 }
+
 
 .dropzone {
   display: flex;
@@ -125,6 +125,13 @@
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 16px;
   margin-top: 24px;
+}
+
+.collection{
+ background: #161d2b;
+  border: 1px solid #2a3447;
+   border-radius: 24px;
+  padding: 32px;
 }
 
 .thumb {
@@ -204,28 +211,22 @@
 .clear-all{
     display: flex;
     gap: 5px;
-    /* width: 100px; */
-    padding: 15px;
-
+    /* width: 110px; */
+    padding: 10px;
     /* height: 50px; */
     font-size: 15px;
-    
 }
 .clear-all:hover{
-    background-color: #083A3D;
+    background-color: rgba(239, 68, 68, 0.4);
     border-radius: 20px;
     transition: 0.2s;
-
 }
 .progress hr {
   transition: background 0.3s;
 }
-
 .progress hr.done {
   background: #22c55e;
 }
-
-
 .btn-primary {
   background: #7c7cff;
   color: #0b1020;

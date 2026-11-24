@@ -1,6 +1,8 @@
 import bcrypt from "bcryptjs";
 import User from "../models/User";
-import type { RegisterInput } from "../validators/auth.validator";
+import type { RegisterInput, LoginInput } from "../validators/auth.validator";
+import { AuthError } from "../utils/AuthError";
+import { createToken } from "../utils/jwt";
 
 export async function registerUser(data: RegisterInput) {
     // الـhash قيمة لا يمكن استرجاع الباسورد الأصلي منها.
@@ -28,3 +30,26 @@ export async function registerUser(data: RegisterInput) {
         createdAt: user.createdAt,
     };
 }
+
+export async function loginUser(data: LoginInput, adminOnly = false) {
+    // الباسورد مخفي في الموديل؛ بنطلبه هنا بس علشان نقارنه.
+    const user = await User.findOne({ email: data.email }).select("+password");
+    if (!user || !(await bcrypt.compare(data.password, user.password))) {
+        throw new AuthError(401, "Incorrect email or password");
+    }
+    if (user.isBlocked) {
+        throw new AuthError(403, "Your account is blocked");
+    }
+    if (adminOnly && user.role !== "admin") throw new AuthError(403, "Admin access required");
+
+    return {
+        token: createToken(user._id.toString(), user.tokenVersion ?? 0),
+        user: {
+            id: user._id.toString(),
+            name: user.name,
+            email: user.email,
+            role: user.role,
+        },
+    };
+}
+
