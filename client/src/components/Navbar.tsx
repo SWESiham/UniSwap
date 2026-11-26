@@ -1,10 +1,11 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
-  Store, Search, Languages, Moon, Heart, Bell, MessageCircle,
+  Store, Search, Moon, Heart, Bell, MessageCircle,
   Plus, User, Settings, LogOut, Menu, X
 } from "lucide-react";
 import { AuthContext } from "../context/AuthContext";
+import { getFavorites } from "../services/favorites.api";
 import "./Navbar.css";
 
 const NAV_LINKS = [
@@ -18,6 +19,7 @@ export const Navbar = () => {
   const { user, loading } = useContext(AuthContext);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [favoriteCount, setFavoriteCount] = useState(0);
   const location = useLocation();
 
   useEffect(() => {
@@ -35,6 +37,25 @@ export const Navbar = () => {
       document.body.style.overflow = "unset";
     };
   }, [isSidebarOpen]);
+
+  useEffect(() => {
+    const loadFavoriteCount = async () => {
+      try {
+        const response = await getFavorites();
+        const favorites = response.data;
+        setFavoriteCount(Array.isArray(favorites) ? favorites.length : 0);
+      } catch (error) {
+        console.error("Failed to load favorite count:", error);
+      }
+    };
+
+    loadFavoriteCount();
+    window.addEventListener("favorites-updated", loadFavoriteCount);
+
+    return () => {
+      window.removeEventListener("favorites-updated", loadFavoriteCount);
+    };
+  }, []);
 
   if (loading) return <div className="loading-state">Loading...</div>;
 
@@ -63,7 +84,7 @@ export const Navbar = () => {
             </div>
             <span className="brand-name">UniSwap</span>
           </Link>
-     
+        </div>
 
         <div className="navbar-links">
           {NAV_LINKS.map((link) => (
@@ -72,31 +93,24 @@ export const Navbar = () => {
             </Link>
           ))}
         </div>
-           </div>
 
-        {/* <div className="navbar-search">
+        <div className="navbar-search">
           <Search className="search-icon" size={18} />
           <input
             type="text"
             placeholder="Search for books, calculators..."
             className="search-input"
           />
-        </div> */}
+        </div>
 
         <div className="navbar-actions">
-          {/* <div className="lang-switcher hide-on-tablet">
-            <Languages size={16} className="lang-icon" />
-            <button className="lang-btn active">EN</button>
-            <button className="lang-btn">ع</button>
-          </div> */}
-
-          {/* <button className="action-btn hide-on-mobile" aria-label="Toggle Theme">
+          <button className="action-btn hide-on-mobile" aria-label="Toggle Theme">
             <Moon size={18} />
-          </button> */}
+          </button>
 
           <button className="action-btn badge-container hide-on-mobile">
             <Heart size={20} />
-            <span className="badge">0</span>
+            <span className="badge">{favoriteCount}</span>
           </button>
 
           <button className="action-btn badge-container hide-on-mobile">
@@ -120,8 +134,8 @@ export const Navbar = () => {
 
           {user && user.name ? (
             <div className="user-menu-container">
-              <div 
-                className="user-avatar" 
+              <div
+                className="user-avatar"
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
               >
                 {user.name.substring(0, 2).toUpperCase()}
@@ -182,12 +196,6 @@ export const Navbar = () => {
             <Search className="search-icon" size={18} />
             <input type="text" placeholder="Search..." className="search-input" />
           </div>
-
-          {/* <div className="sidebar-lang">
-            <Languages size={16} className="lang-icon" />
-            <button className="lang-btn active">EN</button>
-            <button className="lang-btn">ع</button>
-          </div> */}
         </div>
       </aside>
     </>

@@ -2,7 +2,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Clock, MapPin, Package, Heart } from "lucide-react";
-import { addFavorite, deleteFavorite, getFavorites } from "../../services/favorites.api";
+import {
+    addFavorite,
+    deleteFavorite,
+    getFavorites
+} from "../../services/favorites.api";
 import "./ProductCard.css";
 
 interface Product {
@@ -33,9 +37,11 @@ function ProductCard({ product }: ProductCardProps) {
         getFavorites()
             .then((response) => {
                 const favorites = response.data;
-                const exists = Array.isArray(favorites) &&
-                    favorites.some((fav: any) =>
-                        String(fav.listing) === product.listingId
+                const exists =
+                    Array.isArray(favorites) &&
+                    favorites.some(
+                        (fav: any) =>
+                            String(fav.listing) === product.listingId
                     );
 
                 if (active) setIsFavorite(exists);
@@ -62,6 +68,10 @@ function ProductCard({ product }: ProductCardProps) {
                 await addFavorite(product.listingId);
                 setIsFavorite(true);
             }
+
+            // Notify Navbar that favorites have changed
+            window.dispatchEvent(new Event("favorites-updated"));
+
         } catch (error) {
             console.error("Favorite action failed:", error);
         } finally {
@@ -71,7 +81,10 @@ function ProductCard({ product }: ProductCardProps) {
 
     return (
         <article className="home-product-card">
-            <Link to="/browse" className="home-product-image">
+            <Link
+                to={product.listingId ? `/product/${product.listingId}` : "/browse"}
+                className="home-product-image"
+            >
                 {product.image ? (
                     <img src={product.image} alt={product.name} />
                 ) : (
@@ -93,7 +106,11 @@ function ProductCard({ product }: ProductCardProps) {
                     className={`favorite-button ${isFavorite ? "active" : ""}`}
                     onClick={handleFavorite}
                     disabled={favoriteLoading}
-                    aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+                    aria-label={
+                        isFavorite
+                            ? "Remove from favorites"
+                            : "Add to favorites"
+                    }
                 >
                     <Heart
                         size={19}
@@ -104,13 +121,21 @@ function ProductCard({ product }: ProductCardProps) {
 
             <div className="home-product-info">
                 <div className="home-product-tags">
-                    <span className="home-condition">{product.condition}</span>
+                    <span className="home-condition">
+                        {product.condition}
+                    </span>
+
                     {product.type && (
-                        <span className="home-sale-tag">{product.type}</span>
+                        <span className="home-sale-tag">
+                            {product.type}
+                        </span>
                     )}
                 </div>
 
-                <Link to="/browse" className="home-product-name">
+                <Link
+                    to={product.listingId ? `/product/${product.listingId}` : "/browse"}
+                    className="home-product-name"
+                >
                     {product.name}
                 </Link>
 

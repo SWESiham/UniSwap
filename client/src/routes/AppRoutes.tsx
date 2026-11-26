@@ -10,6 +10,7 @@ import Home from "../pages/marketplace/Home";
 import Browse from "../pages/marketplace/Browse";
 import ProductDetails from "../pages/listings/ProductDetails";
 
+
 export const AppRoutes = () => {
   return (
     <>
