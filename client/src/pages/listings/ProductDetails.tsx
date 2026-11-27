@@ -74,6 +74,7 @@ const ProductDetails = () => {
             const filtered = allCatItems.filter(
               (item: any) =>
                 item._id !== listing._id &&
+                (item.isApproved === true || item.approvalStatus === "approved") &&
                 (item.category?._id === categoryId ||
                   item.category === categoryId),
             );
@@ -233,7 +234,7 @@ const ProductDetails = () => {
             <h3 className="section-title">Other items from this seller</h3>
             {lists && lists.length > 0 ? (
               lists
-                .filter((l: any) => l._id !== list?._id)
+                .filter((l: any) => l._id !== list?._id && (l.isApproved === true || l.approvalStatus === "approved"))
                 .slice(0, 3)
                 .map((l: any) => (
                   <div

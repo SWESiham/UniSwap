@@ -10,6 +10,7 @@ import {
 import { getCategories } from "../../services/categories.api";
 import type { Listing } from "../../types";
 import "./Browse.css";
+import { useNavigate } from "react-router-dom";
 
 interface Category {
     _id: string;
@@ -69,16 +70,16 @@ function Browse() {
     const [faculty, setFaculty] = useState("");
     const [department, setDepartment] = useState("");
 
-    // Sorting and pagination
-    const [sort, setSort] = useState("newest");
-    const [page, setPage] = useState(1);
-    const itemsPerPage = 10;
-
-    // Load categories
-    useEffect(() => {
-        const fetchCategories = async () => {
-            try {
-                const response = await getCategories();
+  // Sorting and pagination
+  const [sort, setSort] = useState("newest");
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 10;
+  const navigate = useNavigate();
+  // Load categories
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await getCategories();
 
                 if (Array.isArray(response)) {
                     setCategories(response);
@@ -408,35 +409,40 @@ function Browse() {
                                 {displayedListings.map((listing) => {
                                     const backendImage = listing.images?.[0];
 
-                                    const productImage =
-                                        backendImage &&
-                                        !backendImage.includes("example.com")
-                                            ? backendImage
-                                            : getFallbackImage(listing.title);
-
-                                    return (
-                                        <ProductCard
-                                            key={listing._id}
-                                            product={{
-                                                listingId: listing._id,
-                                                name: listing.title,
-                                                price: `${listing.price} EGP`,
-                                                condition: formatLabel(listing.condition),
-                                                image: productImage,
-                                                faculty: listing.faculty || "Not specified",
-                                                type:
-                                                    listing.type === "sell"
-                                                        ? "For Sale"
-                                                        : listing.type === "exchange"
-                                                        ? "Exchange"
-                                                        : "Sale or Exchange",
-                                                time: "Recently",
-                                                match: false,
-                                            }}
-                                        />
-                                    );
-                                })}
-                            </div>
+                  const productImage =
+                    backendImage && !backendImage.includes("example.com")
+                      ? backendImage.startsWith("http")
+                        ? backendImage
+                        : `http://localhost:5000${backendImage.startsWith("/") ? "" : "/"}${backendImage}`
+                      : getFallbackImage(listing.title);
+                  return (
+                    <div
+                      key={listing._id}
+                      onClick={() => navigate(`/product/${listing._id}`)}
+                      className="cursor-pointer"
+                    >
+                      <ProductCard
+                        product={{
+                          listingId: listing._id,
+                          name: listing.title,
+                          price: `${listing.price} EGP`,
+                          condition: formatLabel(listing.condition),
+                          image: productImage,
+                          faculty: listing.faculty || "Not specified",
+                          type:
+                            listing.type === "sell"
+                              ? "For Sale"
+                              : listing.type === "exchange"
+                                ? "Exchange"
+                                : "Sale or Exchange",
+                          time: "Recently",
+                          match: false,
+                        }}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
 
                             {totalPages > 1 && (
                                 <div className="browse-pagination">
